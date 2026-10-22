@@ -1,0 +1,103 @@
+import { create } from 'zustand'
+import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
+import type { DryerType } from '../models/catalog'
+
+export type LearningMode = 'guided' | 'explore'
+export type KnowledgeDepth = 'basic' | 'engineering'
+export type CircuitVisibility = 'air' | 'refrigerant' | 'both'
+export type ViewMode = 'exterior' | 'transparent' | 'section' | 'exploded'
+
+export type TeachingState = {
+  machine: DryerType
+  mode: LearningMode
+  depth: KnowledgeDepth
+  circuit: CircuitVisibility
+  viewMode: ViewMode
+  playing: boolean
+  speed: 0.5 | 1 | 2
+  step: number
+  teachingProgress: number
+  selectedComponent: string | null
+  selectedProcess: string | null
+  setMachine: (machine: DryerType) => void
+  setMode: (mode: LearningMode) => void
+  setDepth: (depth: KnowledgeDepth) => void
+  setCircuit: (circuit: CircuitVisibility) => void
+  setViewMode: (viewMode: ViewMode) => void
+  togglePlaying: () => void
+  setSpeed: (speed: 0.5 | 1 | 2) => void
+  setStep: (step: number) => void
+  advanceProgress: (delta: number) => void
+  selectComponent: (component: string | null, process?: string | null) => void
+  selectProcess: (process: string | null, component?: string | null) => void
+  reset: () => void
+}
+
+export const defaultTeachingState = {
+  machine: 'heat-pump' as DryerType,
+  mode: 'guided' as LearningMode,
+  depth: 'basic' as KnowledgeDepth,
+  circuit: 'both' as CircuitVisibility,
+  viewMode: 'transparent' as ViewMode,
+  playing: true,
+  speed: 1 as const,
+  step: 0,
+  teachingProgress: 0,
+  selectedComponent: 'condenser',
+  selectedProcess: '2-3',
+}
+
+const memoryStorage: StateStorage = {
+  getItem: () => null,
+  setItem: () => undefined,
+  removeItem: () => undefined,
+}
+
+export const useTeachingStore = create<TeachingState>()(
+  persist(
+    (set) => ({
+      ...defaultTeachingState,
+      setMachine: (machine) =>
+        set({ machine, selectedComponent: null, selectedProcess: null, step: 0 }),
+      setMode: (mode) => set({ mode }),
+      setDepth: (depth) => set({ depth }),
+      setCircuit: (circuit) => set({ circuit }),
+      setViewMode: (viewMode) => set({ viewMode }),
+      togglePlaying: () => set((state) => ({ playing: !state.playing })),
+      setSpeed: (speed) => set({ speed }),
+      setStep: (step) => set({ step, teachingProgress: step / 3 }),
+      advanceProgress: (delta) =>
+        set((state) => ({ teachingProgress: (state.teachingProgress + delta) % 1 })),
+      selectComponent: (selectedComponent, selectedProcess = null) =>
+        set({ selectedComponent, selectedProcess }),
+      selectProcess: (selectedProcess, selectedComponent = null) =>
+        set({ selectedProcess, selectedComponent }),
+      reset: () => set(defaultTeachingState),
+    }),
+    {
+      name: 'dryer3d-learning-preferences-v1',
+      storage: createJSONStorage(() =>
+        typeof window === 'undefined' ? memoryStorage : window.localStorage,
+      ),
+      partialize: (state) => ({
+        machine: state.machine,
+        mode: state.mode,
+        depth: state.depth,
+        circuit: state.circuit,
+        viewMode: state.viewMode,
+        speed: state.speed,
+        step: state.step,
+      }),
+    },
+  ),
+)
+
+export const processComponentMap: Record<string, string> = {
+  '1-2': 'compressor',
+  '2-3': 'condenser',
+  '3-4': 'capillary',
+  '4-1': 'evaporator',
+  heating: 'condenser',
+  humidifying: 'drum',
+  dehumidifying: 'evaporator',
+}
