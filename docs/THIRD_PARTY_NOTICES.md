@@ -7,3 +7,5 @@
 完整可复现版本记录在 `package.json` 与 `pnpm-lock.yaml`。生产依赖已执行 `pnpm audit --prod`，2026-10-22 结果为 `No known vulnerabilities found`。该结果只代表审查时 npm advisory 数据库中的已知问题，不构成未来安全保证。
 
 项目未打包任何外部图片、视频、字体或 3D 模型。阶段 2 模型、管路、标签纹理均由运行时代码生成；原 PPT 媒体只保留在本地审查证据目录，不进入 `src/`、`public/` 或生产构建。
+
+阶段 3 构建期物性工具为 CoolProp 7.2.0（MIT）和 NumPy 2.4.6（BSD-3-Clause）。它们安装在被 Git 忽略的项目 `.venv` 中，不随静态网页发布；发布包只包含生成的 JSON 数据及其版本/来源元数据。

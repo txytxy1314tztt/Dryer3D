@@ -24,7 +24,11 @@ export function ControlRail() {
         <ol className="step-list">
           {teachingSteps.map((item, index) => (
             <li key={item.title} className={state.step === index ? 'active' : ''}>
-              <button onClick={() => state.setStep(index)}>
+              <button onClick={() => {
+                state.setStep(index)
+                state.setCircuit(item.circuit)
+                state.selectProcess(item.process, item.component)
+              }}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
                 <div><strong>{item.title}</strong><small>{item.body}</small></div>
               </button>

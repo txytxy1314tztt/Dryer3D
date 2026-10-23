@@ -147,8 +147,30 @@ function Cabinet() {
 
 const ventedAir: V3[] = [[-1.55,-1.2,.3],[-.8,-1.25,.3],[0,-.65,.3],[.9,.5,.3],[.2,1.2,.3],[-.9,.65,.3],[.95,-.8,.3],[1.75,-.55,.3]]
 const condenserAir: V3[] = [[-.9,-1.25,.32],[-.5,-.65,.32],[.9,.35,.32],[.1,1.2,.32],[-.95,.55,.32],[.8,-.82,.32],[.15,-1.35,.32]]
-const heatPumpAir: V3[] = [[-.85,-1.25,.38],[-.5,-.55,.38],[.95,.35,.38],[.15,1.2,.38],[-.95,.5,.38],[.12,-1.28,.38],[.85,-1.25,.38]]
-const refrigerant: V3[] = [[1.15,-1.15,-.58],[.8,-1.52,-.58],[-.88,-1.46,-.52],[-1.05,-1.15,-.2],[-.35,-1.55,-.35],[.08,-1.52,-.42],[.4,-1.18,-.55],[1.15,-1.15,-.58]]
+const airHeating: V3[] = [[-.86,-1.28,.38],[-.62,-.72,.38],[-.48,-.25,.38],[-.18,.05,.38]]
+const airHumidifying: V3[] = [[-.18,.05,.38],[.72,.55,.38],[.22,1.2,.38],[-.78,.62,.38]]
+const airDehumidifying: V3[] = [[-.78,.62,.38],[-.48,-.15,.38],[.08,-1.22,.38],[.92,-1.2,.38],[-.86,-1.28,.38]]
+const refCompression: V3[] = [[1.15,-1.15,-.58],[.82,-1.48,-.55],[-.15,-1.5,-.42],[-.86,-1.18,.38]]
+const refCondensation: V3[] = [[-.86,-1.18,.38],[-1.05,-1.32,.18],[-.78,-1.5,-.18],[-.4,-1.52,-.38]]
+const refExpansion: V3[] = [[-.4,-1.52,-.38],[-.18,-1.48,-.18],[.08,-1.18,.38]]
+const refEvaporation: V3[] = [[.08,-1.18,.38],[.42,-1.4,.05],[.76,-1.35,-.45],[1.15,-1.15,-.58]]
+
+function HeatExchangeInset() {
+  const selected = useTeachingStore((s) => s.selectedComponent)
+  if (selected !== 'condenser' && selected !== 'evaporator') return null
+  const condenser = selected === 'condenser'
+  return <group position={[2.35,.45,-.35]} scale={.72}>
+    <mesh position={[0,0,0]}><boxGeometry args={[1.5,.08,1]} /><meshStandardMaterial color="#b9c7cb" metalness={.7} /></mesh>
+    <mesh position={[0,.48,0]}><boxGeometry args={[1.6,.55,.9]} /><meshPhysicalMaterial color={condenser ? colors.refrigerantHot : colors.airWet} transparent opacity={.18} /></mesh>
+    <mesh position={[0,-.48,0]}><boxGeometry args={[1.6,.55,.9]} /><meshPhysicalMaterial color={condenser ? colors.airWet : colors.refrigerantCold} transparent opacity={.18} /></mesh>
+    <FlowParticles kind={condenser ? 'refrigerant' : 'air'} processId={condenser ? '2-3' : 'dehumidifying'} variant={condenser ? 'gas' : 'air'} color={condenser ? colors.refrigerantHot : colors.airWet} points={[[-.65,.48,0],[.65,.48,0]]} count={7} closed={false} />
+    <FlowParticles kind={condenser ? 'air' : 'refrigerant'} processId={condenser ? 'heating' : '4-1'} variant={condenser ? 'air' : 'two-phase'} color={condenser ? colors.airHot : colors.refrigerantCold} points={[[.65,-.48,0],[-.65,-.48,0]]} count={7} closed={false} />
+    {[-.45,0,.45].map((z) => <group key={z} position={[0,0,z]} rotation={[0,0,Math.PI]}>
+      <mesh position={[0,.18,0]}><cylinderGeometry args={[.025,.025,.3,8]} /><meshStandardMaterial color="#ffd166" emissive="#c88b22" /></mesh>
+      <mesh position={[0,.36,0]}><coneGeometry args={[.07,.14,8]} /><meshStandardMaterial color="#ffd166" emissive="#c88b22" /></mesh>
+    </group>)}
+  </group>
+}
 
 function CommonParts() {
   return <>
@@ -195,10 +217,16 @@ function HeatPumpModel() {
     </InteractivePart>
     <InteractivePart id="water-tray" position={[.08,-1.62,.42]} explode={[0,-.7,.5]} size={[.88,.07,.68]} color="#3687aa" />
     <InteractivePart id="drain" position={[-.35,-1.62,.42]} explode={[-.7,-.5,0]} size={[.2,.2,.2]}><Tube points={[[0,0,0],[-.2,-.22,0],[-.42,-.34,.08]]} color={colors.water} radius={.045} /></InteractivePart>
-    <Tube points={heatPumpAir} color="#315c69" radius={.1} opacity={.55} />
-    <FlowParticles kind="air" color={colors.airWet} points={heatPumpAir} count={18} />
-    <Tube points={refrigerant} color={colors.copper} radius={.045} />
-    <FlowParticles kind="refrigerant" color={colors.refrigerantHot} points={refrigerant} count={18} closed={false} />
+    {[airHeating,airHumidifying,airDehumidifying].map((points, index) => <Tube key={`air-${index}`} points={points} color="#315c69" radius={.1} opacity={.55} />)}
+    <FlowParticles kind="air" processId="heating" color={colors.airHot} points={airHeating} count={7} closed={false} />
+    <FlowParticles kind="air" processId="humidifying" color="#7fd0ee" points={airHumidifying} count={9} closed={false} />
+    <FlowParticles kind="air" processId="dehumidifying" color={colors.airWet} points={airDehumidifying} count={9} closed={false} />
+    <Tube points={refCompression} color="#d86650" radius={.045} /><Tube points={refCondensation} color="#d88b4e" radius={.045} /><Tube points={refExpansion} color="#83b8ce" radius={.045} /><Tube points={refEvaporation} color="#4eaed4" radius={.045} />
+    <FlowParticles kind="refrigerant" processId="1-2" variant="gas" color="#ff6b55" points={refCompression} count={6} closed={false} />
+    <FlowParticles kind="refrigerant" processId="2-3" variant="gas" color="#ff9a52" points={refCondensation} count={7} closed={false} />
+    <FlowParticles kind="refrigerant" processId="3-4" variant="liquid" color="#e6c967" points={refExpansion} count={5} closed={false} />
+    <FlowParticles kind="refrigerant" processId="4-1" variant="two-phase" color="#55c2ff" points={refEvaporation} count={8} closed={false} />
+    <HeatExchangeInset />
   </>
 }
 

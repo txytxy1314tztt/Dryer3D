@@ -1,0 +1,4143 @@
+{
+  "schemaVersion": "1.0.0",
+  "algorithmVersion": "1.0.0",
+  "generatedAtUtc": "2026-10-23T13:56:31.660620Z",
+  "library": {
+    "name": "CoolProp",
+    "version": "7.2.0",
+    "gitRevision": "98b3523d5daa98454618d381d2ae53f7471d216b",
+    "license": "MIT"
+  },
+  "units": {
+    "pressure": "MPa (chart/state); Pa (humid-air input)",
+    "temperature": "°C",
+    "specificEnthalpy": "kJ/kg refrigerant or kJ/kg dry air as named",
+    "specificEntropy": "kJ/(kg·K)",
+    "humidityRatio": "kg water/kg dry air"
+  },
+  "scope": "Static discrete teaching scenario; not calibrated dryer performance or drying-time simulation.",
+  "applicability": "Only the stated R134a and humid-air inputs are validated. Chart clipping ranges are visualization bounds, not fluid-property validity limits.",
+  "sources": [
+    "https://coolprop.org/fluid_properties/fluids/R134a.html",
+    "https://coolprop.org/fluid_properties/HumidAir.html",
+    "https://coolprop.org/coolprop/HighLevelAPI.html"
+  ],
+  "refrigerant": {
+    "fluid": "R134a",
+    "calculationMethod": "CoolProp PropsSI; saturated pressures at specified evaporating/condensing temperatures; compressor outlet from isentropic reference and specified efficiency; state 3 from subcooling; state 4 from h4=h3.",
+    "chartRange": {
+      "saturationTemperatureC": [
+        -30,
+        100
+      ],
+      "pressureMPa": [
+        0.12,
+        4.5
+      ],
+      "enthalpyKJkg": [
+        150,
+        500
+      ]
+    },
+    "assumptions": {
+      "evaporatingSaturationTemperatureC": 5.0,
+      "condensingSaturationTemperatureC": 50.0,
+      "suctionSuperheatK": 8.0,
+      "liquidSubcoolingK": 5.0,
+      "compressorIsentropicEfficiency": 0.7,
+      "steadyState": true,
+      "pressureDropInHeatExchangersNeglected": true,
+      "throttlingIsenthalpic": true
+    },
+    "states": [
+      {
+        "id": "1",
+        "pressureMPa": 0.349659,
+        "temperatureC": 13.0,
+        "enthalpyKJkg": 408.8009,
+        "entropyKJkgK": 1.750368,
+        "quality": null,
+        "phase": "gas"
+      },
+      {
+        "id": "2",
+        "pressureMPa": 1.317905,
+        "temperatureC": 72.9244,
+        "enthalpyKJkg": 449.9762,
+        "entropyKJkgK": 1.786643,
+        "quality": null,
+        "phase": "gas"
+      },
+      {
+        "id": "3",
+        "pressureMPa": 1.317905,
+        "temperatureC": 45.0,
+        "enthalpyKJkg": 263.8967,
+        "entropyKJkgK": 1.213358,
+        "quality": null,
+        "phase": "liquid"
+      },
+      {
+        "id": "4",
+        "pressureMPa": 0.349659,
+        "temperatureC": 5.0,
+        "enthalpyKJkg": 263.8967,
+        "entropyKJkgK": 1.229781,
+        "quality": 0.29344,
+        "phase": "twophase"
+      }
+    ],
+    "processes": [
+      {
+        "id": "1-2",
+        "label": "压缩",
+        "component": "compressor",
+        "from": "1",
+        "to": "2"
+      },
+      {
+        "id": "2-3",
+        "label": "冷凝放热",
+        "component": "condenser",
+        "from": "2",
+        "to": "3"
+      },
+      {
+        "id": "3-4",
+        "label": "等焓节流",
+        "component": "capillary",
+        "from": "3",
+        "to": "4"
+      },
+      {
+        "id": "4-1",
+        "label": "蒸发吸热",
+        "component": "evaporator",
+        "from": "4",
+        "to": "1"
+      }
+    ],
+    "energyPerKg": {
+      "compressorWorkKJkg": 41.1753,
+      "evaporatorHeatKJkg": 144.9042,
+      "condenserHeatKJkg": 186.0795,
+      "heatingCOP": 4.5192,
+      "statement": "q_cond ≈ q_evap + w_comp; unit-mass refrigerant basis, not measured whole-machine COP"
+    },
+    "saturationDome": {
+      "liquid": [
+        {
+          "temperatureC": -30.0,
+          "pressureMPa": 0.084378,
+          "enthalpyKJkg": 160.792
+        },
+        {
+          "temperatureC": -28.556,
+          "pressureMPa": 0.090328,
+          "enthalpyKJkg": 162.6346
+        },
+        {
+          "temperatureC": -27.111,
+          "pressureMPa": 0.096607,
+          "enthalpyKJkg": 164.4814
+        },
+        {
+          "temperatureC": -25.667,
+          "pressureMPa": 0.103226,
+          "enthalpyKJkg": 166.3324
+        },
+        {
+          "temperatureC": -24.222,
+          "pressureMPa": 0.110199,
+          "enthalpyKJkg": 168.1877
+        },
+        {
+          "temperatureC": -22.778,
+          "pressureMPa": 0.11754,
+          "enthalpyKJkg": 170.0472
+        },
+        {
+          "temperatureC": -21.333,
+          "pressureMPa": 0.12526,
+          "enthalpyKJkg": 171.9112
+        },
+        {
+          "temperatureC": -19.889,
+          "pressureMPa": 0.133373,
+          "enthalpyKJkg": 173.7796
+        },
+        {
+          "temperatureC": -18.444,
+          "pressureMPa": 0.141894,
+          "enthalpyKJkg": 175.6526
+        },
+        {
+          "temperatureC": -17.0,
+          "pressureMPa": 0.150837,
+          "enthalpyKJkg": 177.5301
+        },
+        {
+          "temperatureC": -15.556,
+          "pressureMPa": 0.160214,
+          "enthalpyKJkg": 179.4124
+        },
+        {
+          "temperatureC": -14.111,
+          "pressureMPa": 0.170042,
+          "enthalpyKJkg": 181.2993
+        },
+        {
+          "temperatureC": -12.667,
+          "pressureMPa": 0.180333,
+          "enthalpyKJkg": 183.1911
+        },
+        {
+          "temperatureC": -11.222,
+          "pressureMPa": 0.191104,
+          "enthalpyKJkg": 185.0878
+        },
+        {
+          "temperatureC": -9.778,
+          "pressureMPa": 0.202369,
+          "enthalpyKJkg": 186.9895
+        },
+        {
+          "temperatureC": -8.333,
+          "pressureMPa": 0.214143,
+          "enthalpyKJkg": 188.8962
+        },
+        {
+          "temperatureC": -6.889,
+          "pressureMPa": 0.226442,
+          "enthalpyKJkg": 190.8081
+        },
+        {
+          "temperatureC": -5.444,
+          "pressureMPa": 0.239281,
+          "enthalpyKJkg": 192.7252
+        },
+        {
+          "temperatureC": -4.0,
+          "pressureMPa": 0.252676,
+          "enthalpyKJkg": 194.6477
+        },
+        {
+          "temperatureC": -2.556,
+          "pressureMPa": 0.266642,
+          "enthalpyKJkg": 196.5755
+        },
+        {
+          "temperatureC": -1.111,
+          "pressureMPa": 0.281197,
+          "enthalpyKJkg": 198.5089
+        },
+        {
+          "temperatureC": 0.333,
+          "pressureMPa": 0.296356,
+          "enthalpyKJkg": 200.448
+        },
+        {
+          "temperatureC": 1.778,
+          "pressureMPa": 0.312136,
+          "enthalpyKJkg": 202.3927
+        },
+        {
+          "temperatureC": 3.222,
+          "pressureMPa": 0.328553,
+          "enthalpyKJkg": 204.3433
+        },
+        {
+          "temperatureC": 4.667,
+          "pressureMPa": 0.345624,
+          "enthalpyKJkg": 206.2998
+        },
+        {
+          "temperatureC": 6.111,
+          "pressureMPa": 0.363367,
+          "enthalpyKJkg": 208.2624
+        },
+        {
+          "temperatureC": 7.556,
+          "pressureMPa": 0.381799,
+          "enthalpyKJkg": 210.2311
+        },
+        {
+          "temperatureC": 9.0,
+          "pressureMPa": 0.400936,
+          "enthalpyKJkg": 212.2061
+        },
+        {
+          "temperatureC": 10.444,
+          "pressureMPa": 0.420797,
+          "enthalpyKJkg": 214.1876
+        },
+        {
+          "temperatureC": 11.889,
+          "pressureMPa": 0.441399,
+          "enthalpyKJkg": 216.1756
+        },
+        {
+          "temperatureC": 13.333,
+          "pressureMPa": 0.46276,
+          "enthalpyKJkg": 218.1704
+        },
+        {
+          "temperatureC": 14.778,
+          "pressureMPa": 0.484898,
+          "enthalpyKJkg": 220.1719
+        },
+        {
+          "temperatureC": 16.222,
+          "pressureMPa": 0.507831,
+          "enthalpyKJkg": 222.1805
+        },
+        {
+          "temperatureC": 17.667,
+          "pressureMPa": 0.531579,
+          "enthalpyKJkg": 224.1961
+        },
+        {
+          "temperatureC": 19.111,
+          "pressureMPa": 0.556159,
+          "enthalpyKJkg": 226.2191
+        },
+        {
+          "temperatureC": 20.556,
+          "pressureMPa": 0.58159,
+          "enthalpyKJkg": 228.2496
+        },
+        {
+          "temperatureC": 22.0,
+          "pressureMPa": 0.607891,
+          "enthalpyKJkg": 230.2876
+        },
+        {
+          "temperatureC": 23.444,
+          "pressureMPa": 0.635082,
+          "enthalpyKJkg": 232.3335
+        },
+        {
+          "temperatureC": 24.889,
+          "pressureMPa": 0.663181,
+          "enthalpyKJkg": 234.3874
+        },
+        {
+          "temperatureC": 26.333,
+          "pressureMPa": 0.692209,
+          "enthalpyKJkg": 236.4496
+        },
+        {
+          "temperatureC": 27.778,
+          "pressureMPa": 0.722184,
+          "enthalpyKJkg": 238.5201
+        },
+        {
+          "temperatureC": 29.222,
+          "pressureMPa": 0.753127,
+          "enthalpyKJkg": 240.5992
+        },
+        {
+          "temperatureC": 30.667,
+          "pressureMPa": 0.785058,
+          "enthalpyKJkg": 242.6872
+        },
+        {
+          "temperatureC": 32.111,
+          "pressureMPa": 0.817997,
+          "enthalpyKJkg": 244.7843
+        },
+        {
+          "temperatureC": 33.556,
+          "pressureMPa": 0.851964,
+          "enthalpyKJkg": 246.8907
+        },
+        {
+          "temperatureC": 35.0,
+          "pressureMPa": 0.886981,
+          "enthalpyKJkg": 249.0067
+        },
+        {
+          "temperatureC": 36.444,
+          "pressureMPa": 0.923068,
+          "enthalpyKJkg": 251.1325
+        },
+        {
+          "temperatureC": 37.889,
+          "pressureMPa": 0.960247,
+          "enthalpyKJkg": 253.2685
+        },
+        {
+          "temperatureC": 39.333,
+          "pressureMPa": 0.998539,
+          "enthalpyKJkg": 255.415
+        },
+        {
+          "temperatureC": 40.778,
+          "pressureMPa": 1.037965,
+          "enthalpyKJkg": 257.5722
+        },
+        {
+          "temperatureC": 42.222,
+          "pressureMPa": 1.078548,
+          "enthalpyKJkg": 259.7405
+        },
+        {
+          "temperatureC": 43.667,
+          "pressureMPa": 1.120309,
+          "enthalpyKJkg": 261.9203
+        },
+        {
+          "temperatureC": 45.111,
+          "pressureMPa": 1.163272,
+          "enthalpyKJkg": 264.1119
+        },
+        {
+          "temperatureC": 46.556,
+          "pressureMPa": 1.207459,
+          "enthalpyKJkg": 266.3158
+        },
+        {
+          "temperatureC": 48.0,
+          "pressureMPa": 1.252894,
+          "enthalpyKJkg": 268.5324
+        },
+        {
+          "temperatureC": 49.444,
+          "pressureMPa": 1.299599,
+          "enthalpyKJkg": 270.762
+        },
+        {
+          "temperatureC": 50.889,
+          "pressureMPa": 1.347598,
+          "enthalpyKJkg": 273.0053
+        },
+        {
+          "temperatureC": 52.333,
+          "pressureMPa": 1.396917,
+          "enthalpyKJkg": 275.2626
+        },
+        {
+          "temperatureC": 53.778,
+          "pressureMPa": 1.447579,
+          "enthalpyKJkg": 277.5347
+        },
+        {
+          "temperatureC": 55.222,
+          "pressureMPa": 1.499609,
+          "enthalpyKJkg": 279.8219
+        },
+        {
+          "temperatureC": 56.667,
+          "pressureMPa": 1.553033,
+          "enthalpyKJkg": 282.1251
+        },
+        {
+          "temperatureC": 58.111,
+          "pressureMPa": 1.607878,
+          "enthalpyKJkg": 284.4449
+        },
+        {
+          "temperatureC": 59.556,
+          "pressureMPa": 1.664169,
+          "enthalpyKJkg": 286.782
+        },
+        {
+          "temperatureC": 61.0,
+          "pressureMPa": 1.721933,
+          "enthalpyKJkg": 289.1372
+        },
+        {
+          "temperatureC": 62.444,
+          "pressureMPa": 1.7812,
+          "enthalpyKJkg": 291.5114
+        },
+        {
+          "temperatureC": 63.889,
+          "pressureMPa": 1.841996,
+          "enthalpyKJkg": 293.9057
+        },
+        {
+          "temperatureC": 65.333,
+          "pressureMPa": 1.904351,
+          "enthalpyKJkg": 296.3209
+        },
+        {
+          "temperatureC": 66.778,
+          "pressureMPa": 1.968296,
+          "enthalpyKJkg": 298.7583
+        },
+        {
+          "temperatureC": 68.222,
+          "pressureMPa": 2.03386,
+          "enthalpyKJkg": 301.2192
+        },
+        {
+          "temperatureC": 69.667,
+          "pressureMPa": 2.101076,
+          "enthalpyKJkg": 303.705
+        },
+        {
+          "temperatureC": 71.111,
+          "pressureMPa": 2.169977,
+          "enthalpyKJkg": 306.2174
+        },
+        {
+          "temperatureC": 72.556,
+          "pressureMPa": 2.240596,
+          "enthalpyKJkg": 308.758
+        },
+        {
+          "temperatureC": 74.0,
+          "pressureMPa": 2.312969,
+          "enthalpyKJkg": 311.3289
+        },
+        {
+          "temperatureC": 75.444,
+          "pressureMPa": 2.387132,
+          "enthalpyKJkg": 313.9325
+        },
+        {
+          "temperatureC": 76.889,
+          "pressureMPa": 2.463125,
+          "enthalpyKJkg": 316.5714
+        },
+        {
+          "temperatureC": 78.333,
+          "pressureMPa": 2.540986,
+          "enthalpyKJkg": 319.2487
+        },
+        {
+          "temperatureC": 79.778,
+          "pressureMPa": 2.620758,
+          "enthalpyKJkg": 321.9679
+        },
+        {
+          "temperatureC": 81.222,
+          "pressureMPa": 2.702486,
+          "enthalpyKJkg": 324.7334
+        },
+        {
+          "temperatureC": 82.667,
+          "pressureMPa": 2.786216,
+          "enthalpyKJkg": 327.55
+        },
+        {
+          "temperatureC": 84.111,
+          "pressureMPa": 2.871999,
+          "enthalpyKJkg": 330.4241
+        },
+        {
+          "temperatureC": 85.556,
+          "pressureMPa": 2.959889,
+          "enthalpyKJkg": 333.363
+        },
+        {
+          "temperatureC": 87.0,
+          "pressureMPa": 3.049944,
+          "enthalpyKJkg": 336.3762
+        },
+        {
+          "temperatureC": 88.444,
+          "pressureMPa": 3.142227,
+          "enthalpyKJkg": 339.4756
+        },
+        {
+          "temperatureC": 89.889,
+          "pressureMPa": 3.23681,
+          "enthalpyKJkg": 342.6771
+        },
+        {
+          "temperatureC": 91.333,
+          "pressureMPa": 3.333769,
+          "enthalpyKJkg": 346.0021
+        },
+        {
+          "temperatureC": 92.778,
+          "pressureMPa": 3.433197,
+          "enthalpyKJkg": 349.4809
+        },
+        {
+          "temperatureC": 94.222,
+          "pressureMPa": 3.535198,
+          "enthalpyKJkg": 353.1591
+        },
+        {
+          "temperatureC": 95.667,
+          "pressureMPa": 3.639903,
+          "enthalpyKJkg": 357.1106
+        },
+        {
+          "temperatureC": 97.111,
+          "pressureMPa": 3.747478,
+          "enthalpyKJkg": 361.4702
+        },
+        {
+          "temperatureC": 98.556,
+          "pressureMPa": 3.858165,
+          "enthalpyKJkg": 366.5359
+        },
+        {
+          "temperatureC": 100.0,
+          "pressureMPa": 3.972379,
+          "enthalpyKJkg": 373.2979
+        }
+      ],
+      "vapor": [
+        {
+          "temperatureC": -30.0,
+          "pressureMPa": 0.084378,
+          "enthalpyKJkg": 380.3186
+        },
+        {
+          "temperatureC": -28.556,
+          "pressureMPa": 0.090328,
+          "enthalpyKJkg": 381.2253
+        },
+        {
+          "temperatureC": -27.111,
+          "pressureMPa": 0.096607,
+          "enthalpyKJkg": 382.1302
+        },
+        {
+          "temperatureC": -25.667,
+          "pressureMPa": 0.103226,
+          "enthalpyKJkg": 383.0331
+        },
+        {
+          "temperatureC": -24.222,
+          "pressureMPa": 0.110199,
+          "enthalpyKJkg": 383.934
+        },
+        {
+          "temperatureC": -22.778,
+          "pressureMPa": 0.11754,
+          "enthalpyKJkg": 384.8327
+        },
+        {
+          "temperatureC": -21.333,
+          "pressureMPa": 0.12526,
+          "enthalpyKJkg": 385.7291
+        },
+        {
+          "temperatureC": -19.889,
+          "pressureMPa": 0.133373,
+          "enthalpyKJkg": 386.6229
+        },
+        {
+          "temperatureC": -18.444,
+          "pressureMPa": 0.141894,
+          "enthalpyKJkg": 387.5142
+        },
+        {
+          "temperatureC": -17.0,
+          "pressureMPa": 0.150837,
+          "enthalpyKJkg": 388.4027
+        },
+        {
+          "temperatureC": -15.556,
+          "pressureMPa": 0.160214,
+          "enthalpyKJkg": 389.2883
+        },
+        {
+          "temperatureC": -14.111,
+          "pressureMPa": 0.170042,
+          "enthalpyKJkg": 390.1708
+        },
+        {
+          "temperatureC": -12.667,
+          "pressureMPa": 0.180333,
+          "enthalpyKJkg": 391.0502
+        },
+        {
+          "temperatureC": -11.222,
+          "pressureMPa": 0.191104,
+          "enthalpyKJkg": 391.9263
+        },
+        {
+          "temperatureC": -9.778,
+          "pressureMPa": 0.202369,
+          "enthalpyKJkg": 392.7989
+        },
+        {
+          "temperatureC": -8.333,
+          "pressureMPa": 0.214143,
+          "enthalpyKJkg": 393.6679
+        },
+        {
+          "temperatureC": -6.889,
+          "pressureMPa": 0.226442,
+          "enthalpyKJkg": 394.5332
+        },
+        {
+          "temperatureC": -5.444,
+          "pressureMPa": 0.239281,
+          "enthalpyKJkg": 395.3946
+        },
+        {
+          "temperatureC": -4.0,
+          "pressureMPa": 0.252676,
+          "enthalpyKJkg": 396.2519
+        },
+        {
+          "temperatureC": -2.556,
+          "pressureMPa": 0.266642,
+          "enthalpyKJkg": 397.1049
+        },
+        {
+          "temperatureC": -1.111,
+          "pressureMPa": 0.281197,
+          "enthalpyKJkg": 397.9537
+        },
+        {
+          "temperatureC": 0.333,
+          "pressureMPa": 0.296356,
+          "enthalpyKJkg": 398.7979
+        },
+        {
+          "temperatureC": 1.778,
+          "pressureMPa": 0.312136,
+          "enthalpyKJkg": 399.6374
+        },
+        {
+          "temperatureC": 3.222,
+          "pressureMPa": 0.328553,
+          "enthalpyKJkg": 400.472
+        },
+        {
+          "temperatureC": 4.667,
+          "pressureMPa": 0.345624,
+          "enthalpyKJkg": 401.3016
+        },
+        {
+          "temperatureC": 6.111,
+          "pressureMPa": 0.363367,
+          "enthalpyKJkg": 402.126
+        },
+        {
+          "temperatureC": 7.556,
+          "pressureMPa": 0.381799,
+          "enthalpyKJkg": 402.945
+        },
+        {
+          "temperatureC": 9.0,
+          "pressureMPa": 0.400936,
+          "enthalpyKJkg": 403.7584
+        },
+        {
+          "temperatureC": 10.444,
+          "pressureMPa": 0.420797,
+          "enthalpyKJkg": 404.566
+        },
+        {
+          "temperatureC": 11.889,
+          "pressureMPa": 0.441399,
+          "enthalpyKJkg": 405.3677
+        },
+        {
+          "temperatureC": 13.333,
+          "pressureMPa": 0.46276,
+          "enthalpyKJkg": 406.1631
+        },
+        {
+          "temperatureC": 14.778,
+          "pressureMPa": 0.484898,
+          "enthalpyKJkg": 406.9522
+        },
+        {
+          "temperatureC": 16.222,
+          "pressureMPa": 0.507831,
+          "enthalpyKJkg": 407.7347
+        },
+        {
+          "temperatureC": 17.667,
+          "pressureMPa": 0.531579,
+          "enthalpyKJkg": 408.5104
+        },
+        {
+          "temperatureC": 19.111,
+          "pressureMPa": 0.556159,
+          "enthalpyKJkg": 409.279
+        },
+        {
+          "temperatureC": 20.556,
+          "pressureMPa": 0.58159,
+          "enthalpyKJkg": 410.0402
+        },
+        {
+          "temperatureC": 22.0,
+          "pressureMPa": 0.607891,
+          "enthalpyKJkg": 410.7939
+        },
+        {
+          "temperatureC": 23.444,
+          "pressureMPa": 0.635082,
+          "enthalpyKJkg": 411.5398
+        },
+        {
+          "temperatureC": 24.889,
+          "pressureMPa": 0.663181,
+          "enthalpyKJkg": 412.2775
+        },
+        {
+          "temperatureC": 26.333,
+          "pressureMPa": 0.692209,
+          "enthalpyKJkg": 413.0069
+        },
+        {
+          "temperatureC": 27.778,
+          "pressureMPa": 0.722184,
+          "enthalpyKJkg": 413.7275
+        },
+        {
+          "temperatureC": 29.222,
+          "pressureMPa": 0.753127,
+          "enthalpyKJkg": 414.4392
+        },
+        {
+          "temperatureC": 30.667,
+          "pressureMPa": 0.785058,
+          "enthalpyKJkg": 415.1415
+        },
+        {
+          "temperatureC": 32.111,
+          "pressureMPa": 0.817997,
+          "enthalpyKJkg": 415.834
+        },
+        {
+          "temperatureC": 33.556,
+          "pressureMPa": 0.851964,
+          "enthalpyKJkg": 416.5166
+        },
+        {
+          "temperatureC": 35.0,
+          "pressureMPa": 0.886981,
+          "enthalpyKJkg": 417.1886
+        },
+        {
+          "temperatureC": 36.444,
+          "pressureMPa": 0.923068,
+          "enthalpyKJkg": 417.8499
+        },
+        {
+          "temperatureC": 37.889,
+          "pressureMPa": 0.960247,
+          "enthalpyKJkg": 418.4998
+        },
+        {
+          "temperatureC": 39.333,
+          "pressureMPa": 0.998539,
+          "enthalpyKJkg": 419.138
+        },
+        {
+          "temperatureC": 40.778,
+          "pressureMPa": 1.037965,
+          "enthalpyKJkg": 419.7641
+        },
+        {
+          "temperatureC": 42.222,
+          "pressureMPa": 1.078548,
+          "enthalpyKJkg": 420.3774
+        },
+        {
+          "temperatureC": 43.667,
+          "pressureMPa": 1.120309,
+          "enthalpyKJkg": 420.9774
+        },
+        {
+          "temperatureC": 45.111,
+          "pressureMPa": 1.163272,
+          "enthalpyKJkg": 421.5637
+        },
+        {
+          "temperatureC": 46.556,
+          "pressureMPa": 1.207459,
+          "enthalpyKJkg": 422.1355
+        },
+        {
+          "temperatureC": 48.0,
+          "pressureMPa": 1.252894,
+          "enthalpyKJkg": 422.6923
+        },
+        {
+          "temperatureC": 49.444,
+          "pressureMPa": 1.299599,
+          "enthalpyKJkg": 423.2333
+        },
+        {
+          "temperatureC": 50.889,
+          "pressureMPa": 1.347598,
+          "enthalpyKJkg": 423.7578
+        },
+        {
+          "temperatureC": 52.333,
+          "pressureMPa": 1.396917,
+          "enthalpyKJkg": 424.265
+        },
+        {
+          "temperatureC": 53.778,
+          "pressureMPa": 1.447579,
+          "enthalpyKJkg": 424.754
+        },
+        {
+          "temperatureC": 55.222,
+          "pressureMPa": 1.499609,
+          "enthalpyKJkg": 425.224
+        },
+        {
+          "temperatureC": 56.667,
+          "pressureMPa": 1.553033,
+          "enthalpyKJkg": 425.6739
+        },
+        {
+          "temperatureC": 58.111,
+          "pressureMPa": 1.607878,
+          "enthalpyKJkg": 426.1027
+        },
+        {
+          "temperatureC": 59.556,
+          "pressureMPa": 1.664169,
+          "enthalpyKJkg": 426.5092
+        },
+        {
+          "temperatureC": 61.0,
+          "pressureMPa": 1.721933,
+          "enthalpyKJkg": 426.8922
+        },
+        {
+          "temperatureC": 62.444,
+          "pressureMPa": 1.7812,
+          "enthalpyKJkg": 427.2502
+        },
+        {
+          "temperatureC": 63.889,
+          "pressureMPa": 1.841996,
+          "enthalpyKJkg": 427.5817
+        },
+        {
+          "temperatureC": 65.333,
+          "pressureMPa": 1.904351,
+          "enthalpyKJkg": 427.8851
+        },
+        {
+          "temperatureC": 66.778,
+          "pressureMPa": 1.968296,
+          "enthalpyKJkg": 428.1585
+        },
+        {
+          "temperatureC": 68.222,
+          "pressureMPa": 2.03386,
+          "enthalpyKJkg": 428.3999
+        },
+        {
+          "temperatureC": 69.667,
+          "pressureMPa": 2.101076,
+          "enthalpyKJkg": 428.6071
+        },
+        {
+          "temperatureC": 71.111,
+          "pressureMPa": 2.169977,
+          "enthalpyKJkg": 428.7775
+        },
+        {
+          "temperatureC": 72.556,
+          "pressureMPa": 2.240596,
+          "enthalpyKJkg": 428.9083
+        },
+        {
+          "temperatureC": 74.0,
+          "pressureMPa": 2.312969,
+          "enthalpyKJkg": 428.9962
+        },
+        {
+          "temperatureC": 75.444,
+          "pressureMPa": 2.387132,
+          "enthalpyKJkg": 429.0377
+        },
+        {
+          "temperatureC": 76.889,
+          "pressureMPa": 2.463125,
+          "enthalpyKJkg": 429.0287
+        },
+        {
+          "temperatureC": 78.333,
+          "pressureMPa": 2.540986,
+          "enthalpyKJkg": 428.9642
+        },
+        {
+          "temperatureC": 79.778,
+          "pressureMPa": 2.620758,
+          "enthalpyKJkg": 428.8387
+        },
+        {
+          "temperatureC": 81.222,
+          "pressureMPa": 2.702486,
+          "enthalpyKJkg": 428.6457
+        },
+        {
+          "temperatureC": 82.667,
+          "pressureMPa": 2.786216,
+          "enthalpyKJkg": 428.3773
+        },
+        {
+          "temperatureC": 84.111,
+          "pressureMPa": 2.871999,
+          "enthalpyKJkg": 428.0243
+        },
+        {
+          "temperatureC": 85.556,
+          "pressureMPa": 2.959889,
+          "enthalpyKJkg": 427.5752
+        },
+        {
+          "temperatureC": 87.0,
+          "pressureMPa": 3.049944,
+          "enthalpyKJkg": 427.0156
+        },
+        {
+          "temperatureC": 88.444,
+          "pressureMPa": 3.142227,
+          "enthalpyKJkg": 426.3276
+        },
+        {
+          "temperatureC": 89.889,
+          "pressureMPa": 3.23681,
+          "enthalpyKJkg": 425.4874
+        },
+        {
+          "temperatureC": 91.333,
+          "pressureMPa": 3.333769,
+          "enthalpyKJkg": 424.4631
+        },
+        {
+          "temperatureC": 92.778,
+          "pressureMPa": 3.433197,
+          "enthalpyKJkg": 423.2099
+        },
+        {
+          "temperatureC": 94.222,
+          "pressureMPa": 3.535198,
+          "enthalpyKJkg": 421.661
+        },
+        {
+          "temperatureC": 95.667,
+          "pressureMPa": 3.639903,
+          "enthalpyKJkg": 419.7092
+        },
+        {
+          "temperatureC": 97.111,
+          "pressureMPa": 3.747478,
+          "enthalpyKJkg": 417.1621
+        },
+        {
+          "temperatureC": 98.556,
+          "pressureMPa": 3.858165,
+          "enthalpyKJkg": 413.6019
+        },
+        {
+          "temperatureC": 100.0,
+          "pressureMPa": 3.972379,
+          "enthalpyKJkg": 407.6832
+        }
+      ]
+    },
+    "criticalPoint": {
+      "temperatureC": 101.062,
+      "pressureMPa": 4.059276
+    },
+    "checks": {
+      "pressureOrder": true,
+      "compressionRaisesTemperatureAndEnthalpy": true,
+      "throttleIsenthalpicErrorKJkg": 0.0,
+      "state4IsTwoPhase": true,
+      "energyBalanceErrorKJkg": 0.0
+    }
+  },
+  "humidAir": {
+    "calculationMethod": "CoolProp HAPropsSI at fixed total pressure; states defined by T/RH or T/humidity ratio; RH and enthalpy chart curves recomputed point-by-point.",
+    "chartRange": {
+      "dryBulbC": [
+        5,
+        60
+      ],
+      "humidityRatioGkgDryAir": [
+        0,
+        40
+      ]
+    },
+    "assumptions": {
+      "pressurePa": 101325.0,
+      "pressureKPa": 101.325,
+      "evaporatorSurfaceTemperatureC": 10.0,
+      "stateDefinition": "A evaporator outlet / B condenser outlet / C drum outlet",
+      "teachingScenario": true,
+      "notDynamicDryingModel": true
+    },
+    "states": [
+      {
+        "id": "A",
+        "dryBulbC": 20.0,
+        "relativeHumidity": 0.85,
+        "humidityRatioKgKgDryAir": 0.0125019,
+        "enthalpyKJkgDryAir": 51.8321,
+        "dewPointC": 17.4033
+      },
+      {
+        "id": "B",
+        "dryBulbC": 50.0,
+        "relativeHumidity": 0.160796,
+        "humidityRatioKgKgDryAir": 0.0125019,
+        "enthalpyKJkgDryAir": 82.7411,
+        "dewPointC": 17.4033
+      },
+      {
+        "id": "C",
+        "dryBulbC": 35.0,
+        "relativeHumidity": 0.6,
+        "humidityRatioKgKgDryAir": 0.0215467,
+        "enthalpyKJkgDryAir": 90.4724,
+        "dewPointC": 26.0728
+      }
+    ],
+    "processes": [
+      {
+        "id": "heating",
+        "label": "冷凝器加热",
+        "from": "A",
+        "to": "B",
+        "component": "condenser"
+      },
+      {
+        "id": "humidifying",
+        "label": "滚筒吸湿",
+        "from": "B",
+        "to": "C",
+        "component": "drum",
+        "strictlyIsenthalpic": false
+      },
+      {
+        "id": "dehumidifying",
+        "label": "蒸发器冷却除湿",
+        "from": "C",
+        "to": "A",
+        "component": "evaporator"
+      }
+    ],
+    "condensedWaterKgPerKgDryAir": 0.0090448,
+    "chart": {
+      "rhCurves": [
+        {
+          "relativeHumidityPercent": 10,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 0.5382
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 0.577
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 0.6182
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 0.662
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 0.7085
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 0.7579
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 0.8102
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 0.8658
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 0.9247
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 0.987
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 1.0531
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 1.123
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 1.197
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 1.2752
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 1.3578
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 1.4452
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 1.5374
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 1.6348
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 1.7375
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 1.8459
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 1.9601
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 2.0805
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 2.2073
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 2.3409
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 2.4814
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 2.6293
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 2.7848
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 2.9483
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 3.1202
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 3.3007
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 3.4903
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 3.6894
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 3.8983
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 4.1174
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 4.3472
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 4.5882
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 4.8407
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 5.1052
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 5.3822
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 5.6723
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 5.9759
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 6.2936
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 6.6259
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 6.9734
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 7.3367
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 7.7164
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 8.1131
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 8.5274
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 8.9601
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 9.4118
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 9.8832
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 10.3752
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 10.8883
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 11.4235
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 11.9814
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 12.5631
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 20,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 1.0774
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 1.1551
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 1.2376
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 1.3254
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 1.4186
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 1.5176
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 1.6226
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 1.734
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 1.8521
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 1.9772
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 2.1097
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 2.25
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 2.3985
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 2.5556
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 2.7216
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 2.8971
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 3.0825
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 3.2782
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 3.4848
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 3.7028
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 3.9326
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 4.175
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 4.4304
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 4.6994
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 4.9827
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 5.2809
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 5.5947
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 5.9248
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 6.2719
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 6.6367
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 7.0201
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 7.4228
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 7.8457
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 8.2897
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 8.7557
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 9.2445
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 9.7573
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 10.2949
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 10.8584
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 11.449
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 12.0678
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 12.7159
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 13.3945
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 14.105
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 14.8485
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 15.6266
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 16.4406
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 17.2919
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 18.1821
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 19.1128
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 20.0857
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 21.1024
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 22.1646
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 23.2744
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 24.4336
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 25.6441
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 30,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 1.6175
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 1.7342
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 1.8583
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 1.9902
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 2.1303
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 2.2791
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 2.4371
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 2.6046
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 2.7822
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 2.9705
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 3.17
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 3.3812
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 3.6047
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 3.8413
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 4.0914
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 4.3558
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 4.6352
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 4.9303
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 5.2419
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 5.5707
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 5.9177
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 6.2836
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 6.6693
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 7.0758
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 7.5041
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 7.9551
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 8.43
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 8.9297
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 9.4555
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 10.0085
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 10.5899
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 11.2011
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 11.8433
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 12.518
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 13.2266
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 13.9706
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 14.7516
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 15.5712
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 16.4311
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 17.3331
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 18.279
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 19.2708
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 20.3105
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 21.4001
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 22.5419
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 23.7381
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 24.9912
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 26.3035
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 27.6778
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 29.1166
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 30.623
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 32.1998
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 33.8501
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 35.5773
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 37.3847
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 39.2759
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 40,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 2.1586
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 2.3144
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 2.4802
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 2.6564
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 2.8437
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 3.0426
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 3.2537
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 3.4777
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 3.7152
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 3.967
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 4.2338
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 4.5164
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 4.8156
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 5.1322
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 5.4672
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 5.8213
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 6.1956
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 6.5911
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 7.0089
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 7.4499
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 7.9153
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 8.4064
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 8.9243
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 9.4704
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 10.0459
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 10.6523
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 11.291
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 11.9635
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 12.6715
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 13.4166
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 14.2005
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 15.0249
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 15.8919
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 16.8034
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 17.7614
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 18.768
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 19.8255
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 20.9363
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 22.1028
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 23.3275
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 24.6132
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 25.9626
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 27.3787
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 28.8646
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 30.4234
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 32.0587
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 33.7739
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 35.5728
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 37.4594
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 39.4376
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 41.512
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 43.687
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 45.9675
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 48.3585
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 50.8654
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 53.494
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 50,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 2.7005
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 2.8957
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 3.1034
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 3.3241
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 3.5587
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 3.8079
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 4.0724
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 4.3531
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 4.6509
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 4.9667
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 5.3013
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 5.6558
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 6.0312
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 6.4286
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 6.849
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 7.2937
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 7.7639
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 8.2608
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 8.7858
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 9.3403
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 9.9257
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 10.5436
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 11.1956
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 11.8832
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 12.6083
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 13.3726
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 14.1781
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 15.0267
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 15.9205
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 16.8617
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 17.8525
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 18.8953
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 19.9926
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 21.1471
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 22.3614
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 23.6383
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 24.981
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 26.3925
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 27.8761
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 29.4354
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 31.0739
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 32.7955
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 34.6042
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 36.5042
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 38.5001
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 40.5965
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 42.7984
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 45.1111
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 47.54
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 50.0911
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 52.7705
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 55.5848
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 58.541
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 61.6464
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 64.9089
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 68.3369
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 60,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 3.2435
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 3.4781
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 3.7278
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 3.9932
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 4.2753
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 4.575
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 4.8933
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 5.2311
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 5.5895
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 5.9695
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 6.3724
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 6.7993
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 7.2515
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 7.7302
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 8.2369
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 8.773
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 9.34
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 9.9394
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 10.5728
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 11.2421
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 11.949
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 12.6954
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 13.4832
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 14.3145
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 15.1915
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 16.1164
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 17.0916
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 18.1196
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 19.2029
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 20.3443
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 21.5467
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 22.813
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 24.1464
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 25.5502
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 27.028
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 28.5833
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 30.2199
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 31.9421
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 33.7539
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 35.66
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 37.665
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 39.774
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 41.9923
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 44.3254
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 46.7793
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 49.3602
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 52.0748
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 54.9301
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 57.9337
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 61.0934
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 64.4178
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 67.9158
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 71.597
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 75.4719
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 79.5512
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 83.8468
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 70,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 3.7873
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 4.0616
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 4.3534
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 4.6637
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 4.9936
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 5.3441
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 5.7163
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 6.1115
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 6.5309
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 6.9756
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 7.4472
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 7.947
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 8.4766
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 9.0373
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 9.631
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 10.2593
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 10.924
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 11.6269
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 12.37
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 13.1555
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 13.9853
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 14.8619
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 15.7875
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 16.7646
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 17.7959
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 18.884
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 20.0319
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 21.2426
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 22.5192
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 23.8651
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 25.2838
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 26.7789
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 28.3543
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 30.0141
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 31.7627
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 33.6045
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 35.5445
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 37.5875
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 39.739
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 42.0047
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 44.3906
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 46.9029
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 49.5486
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 52.3346
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 55.2687
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 58.3588
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 61.6138
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 65.0426
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 68.6552
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 72.462
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 76.4742
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 80.7039
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 85.1639
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 89.8681
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 94.8313
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 100.0697
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 80,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 4.3322
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 4.6462
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 4.9803
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 5.3357
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 5.7135
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 6.1151
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 6.5416
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 6.9944
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 7.475
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 7.9849
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 8.5257
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 9.0989
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 9.7064
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 10.3499
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 11.0313
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 11.7526
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 12.5159
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 13.3235
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 14.1775
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 15.0804
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 16.0347
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 17.0432
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 18.1085
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 19.2336
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 20.4216
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 21.6758
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 22.9995
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 24.3963
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 25.8701
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 27.4248
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 29.0645
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 30.7938
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 32.6173
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 34.54
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 36.567
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 38.7039
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 40.9566
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 43.3313
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 45.8344
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 48.4731
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 51.2547
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 54.1871
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 57.2788
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 60.5387
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 63.9764
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 67.602
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 71.4266
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 75.4618
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 79.7202
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 84.2154
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 88.9618
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 93.975
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 99.2721
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 104.8711
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 110.792
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 117.056
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 90,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 4.8779
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 5.2318
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 5.6084
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 6.0091
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 6.4351
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 6.8879
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 7.3689
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 7.8798
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 8.4221
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 8.9975
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 9.6079
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 10.2551
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 10.941
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 11.6679
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 12.4378
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 13.253
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 14.1159
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 15.0291
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 15.9952
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 17.017
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 18.0974
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 19.2395
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 20.4464
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 21.7218
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 23.069
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 24.4919
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 25.9946
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 27.5811
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 29.256
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 31.0238
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 32.8897
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 34.8588
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 36.9366
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 39.1291
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 41.4425
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 43.8833
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 46.4586
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 49.1759
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 52.0431
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 55.0687
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 58.2617
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 61.6318
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 65.1891
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 68.9449
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 72.9109
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 77.0998
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 81.5252
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 86.2019
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 91.1456
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 96.3735
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 101.904
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 107.7571
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 113.9547
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 120.5203
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 127.4796
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 134.8607
+            }
+          ]
+        },
+        {
+          "relativeHumidityPercent": 100,
+          "points": [
+            {
+              "dryBulbC": 5,
+              "humidityRatioGkg": 5.4247
+            },
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 5.8186
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 6.2379
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 6.6839
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 7.1584
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 7.6626
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 8.1985
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 8.7677
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 9.372
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 10.0133
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 10.6938
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 11.4154
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 12.1805
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 12.9914
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 13.8505
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 14.7605
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 15.724
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 16.744
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 17.8234
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 18.9654
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 20.1734
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 21.4509
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 22.8016
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 24.2293
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 25.7383
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 27.3329
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 29.0176
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 30.7974
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 32.6774
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 34.6631
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 36.7601
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 38.9747
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 41.3133
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 43.7828
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 46.3906
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 49.1445
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 52.0527
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 55.1242
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 58.3684
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 61.7954
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 65.4161
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 69.2421
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 73.2859
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 77.5608
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 82.0813
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 86.8629
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 91.9224
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 97.278
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 102.9493
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 108.9576
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 115.3262
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 122.0803
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 129.2476
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 136.8581
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 144.945
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 153.5446
+            }
+          ]
+        }
+      ],
+      "enthalpyLines": [
+        {
+          "enthalpyKJkgDryAir": 20,
+          "points": [
+            {
+              "dryBulbC": 6,
+              "humidityRatioGkg": 5.5618
+            },
+            {
+              "dryBulbC": 7,
+              "humidityRatioGkg": 5.1573
+            },
+            {
+              "dryBulbC": 8,
+              "humidityRatioGkg": 4.7534
+            },
+            {
+              "dryBulbC": 9,
+              "humidityRatioGkg": 4.3502
+            },
+            {
+              "dryBulbC": 10,
+              "humidityRatioGkg": 3.9475
+            },
+            {
+              "dryBulbC": 11,
+              "humidityRatioGkg": 3.5454
+            },
+            {
+              "dryBulbC": 12,
+              "humidityRatioGkg": 3.144
+            },
+            {
+              "dryBulbC": 13,
+              "humidityRatioGkg": 2.7431
+            },
+            {
+              "dryBulbC": 14,
+              "humidityRatioGkg": 2.3429
+            },
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 1.9432
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 1.5441
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 1.1457
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 0.7478
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 0.3505
+            }
+          ]
+        },
+        {
+          "enthalpyKJkgDryAir": 40,
+          "points": [
+            {
+              "dryBulbC": 15,
+              "humidityRatioGkg": 9.8565
+            },
+            {
+              "dryBulbC": 16,
+              "humidityRatioGkg": 9.4513
+            },
+            {
+              "dryBulbC": 17,
+              "humidityRatioGkg": 9.0467
+            },
+            {
+              "dryBulbC": 18,
+              "humidityRatioGkg": 8.6428
+            },
+            {
+              "dryBulbC": 19,
+              "humidityRatioGkg": 8.2394
+            },
+            {
+              "dryBulbC": 20,
+              "humidityRatioGkg": 7.8366
+            },
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 7.4344
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 7.0329
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 6.6319
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 6.2315
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 5.8317
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 5.4325
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 5.0339
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 4.6358
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 4.2384
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 3.8415
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 3.4452
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 3.0495
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 2.6543
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 2.2597
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 1.8657
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 1.4722
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 1.0793
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 0.687
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 0.2952
+            }
+          ]
+        },
+        {
+          "enthalpyKJkgDryAir": 60,
+          "points": [
+            {
+              "dryBulbC": 21,
+              "humidityRatioGkg": 15.3149
+            },
+            {
+              "dryBulbC": 22,
+              "humidityRatioGkg": 14.9072
+            },
+            {
+              "dryBulbC": 23,
+              "humidityRatioGkg": 14.5002
+            },
+            {
+              "dryBulbC": 24,
+              "humidityRatioGkg": 14.0937
+            },
+            {
+              "dryBulbC": 25,
+              "humidityRatioGkg": 13.6879
+            },
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 13.2827
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 12.878
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 12.474
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 12.0706
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 11.6678
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 11.2655
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 10.8639
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 10.4628
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 10.0624
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 9.6625
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 9.2631
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 8.8644
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 8.4663
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 8.0687
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 7.6717
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 7.2752
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 6.8793
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 6.484
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 6.0893
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 5.6951
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 5.3015
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 4.9084
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 4.5159
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 4.124
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 3.7326
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 3.3417
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 2.9514
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 2.5617
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 2.1725
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 1.7838
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 1.3957
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 1.0081
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 0.621
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 0.2345
+            }
+          ]
+        },
+        {
+          "enthalpyKJkgDryAir": 80,
+          "points": [
+            {
+              "dryBulbC": 26,
+              "humidityRatioGkg": 21.1359
+            },
+            {
+              "dryBulbC": 27,
+              "humidityRatioGkg": 20.7253
+            },
+            {
+              "dryBulbC": 28,
+              "humidityRatioGkg": 20.3152
+            },
+            {
+              "dryBulbC": 29,
+              "humidityRatioGkg": 19.9057
+            },
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 19.4969
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 19.0887
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 18.681
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 18.274
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 17.8676
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 17.4618
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 17.0566
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 16.6519
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 16.2479
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 15.8445
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 15.4416
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 15.0393
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 14.6376
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 14.2365
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 13.836
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 13.436
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 13.0366
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 12.6378
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 12.2396
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 11.8419
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 11.4448
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 11.0482
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 10.6522
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 10.2568
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 9.8619
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 9.4676
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 9.0738
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 8.6806
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 8.288
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 7.8958
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 7.5043
+            }
+          ]
+        },
+        {
+          "enthalpyKJkgDryAir": 100,
+          "points": [
+            {
+              "dryBulbC": 30,
+              "humidityRatioGkg": 27.3288
+            },
+            {
+              "dryBulbC": 31,
+              "humidityRatioGkg": 26.9145
+            },
+            {
+              "dryBulbC": 32,
+              "humidityRatioGkg": 26.5008
+            },
+            {
+              "dryBulbC": 33,
+              "humidityRatioGkg": 26.0878
+            },
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 25.6754
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 25.2636
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 24.8524
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 24.4418
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 24.0319
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 23.6225
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 23.2138
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 22.8056
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 22.398
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 21.9911
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 21.5847
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 21.1789
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 20.7737
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 20.3691
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 19.9651
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 19.5617
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 19.1588
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 18.7565
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 18.3548
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 17.9537
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 17.5531
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 17.1531
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 16.7536
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 16.3548
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 15.9564
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 15.5587
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 15.1615
+            }
+          ]
+        },
+        {
+          "enthalpyKJkgDryAir": 120,
+          "points": [
+            {
+              "dryBulbC": 34,
+              "humidityRatioGkg": 33.4856
+            },
+            {
+              "dryBulbC": 35,
+              "humidityRatioGkg": 33.0678
+            },
+            {
+              "dryBulbC": 36,
+              "humidityRatioGkg": 32.6506
+            },
+            {
+              "dryBulbC": 37,
+              "humidityRatioGkg": 32.234
+            },
+            {
+              "dryBulbC": 38,
+              "humidityRatioGkg": 31.8181
+            },
+            {
+              "dryBulbC": 39,
+              "humidityRatioGkg": 31.4028
+            },
+            {
+              "dryBulbC": 40,
+              "humidityRatioGkg": 30.9881
+            },
+            {
+              "dryBulbC": 41,
+              "humidityRatioGkg": 30.574
+            },
+            {
+              "dryBulbC": 42,
+              "humidityRatioGkg": 30.1605
+            },
+            {
+              "dryBulbC": 43,
+              "humidityRatioGkg": 29.7477
+            },
+            {
+              "dryBulbC": 44,
+              "humidityRatioGkg": 29.3354
+            },
+            {
+              "dryBulbC": 45,
+              "humidityRatioGkg": 28.9238
+            },
+            {
+              "dryBulbC": 46,
+              "humidityRatioGkg": 28.5128
+            },
+            {
+              "dryBulbC": 47,
+              "humidityRatioGkg": 28.1023
+            },
+            {
+              "dryBulbC": 48,
+              "humidityRatioGkg": 27.6925
+            },
+            {
+              "dryBulbC": 49,
+              "humidityRatioGkg": 27.2833
+            },
+            {
+              "dryBulbC": 50,
+              "humidityRatioGkg": 26.8746
+            },
+            {
+              "dryBulbC": 51,
+              "humidityRatioGkg": 26.4666
+            },
+            {
+              "dryBulbC": 52,
+              "humidityRatioGkg": 26.0591
+            },
+            {
+              "dryBulbC": 53,
+              "humidityRatioGkg": 25.6522
+            },
+            {
+              "dryBulbC": 54,
+              "humidityRatioGkg": 25.2459
+            },
+            {
+              "dryBulbC": 55,
+              "humidityRatioGkg": 24.8402
+            },
+            {
+              "dryBulbC": 56,
+              "humidityRatioGkg": 24.435
+            },
+            {
+              "dryBulbC": 57,
+              "humidityRatioGkg": 24.0304
+            },
+            {
+              "dryBulbC": 58,
+              "humidityRatioGkg": 23.6265
+            },
+            {
+              "dryBulbC": 59,
+              "humidityRatioGkg": 23.223
+            },
+            {
+              "dryBulbC": 60,
+              "humidityRatioGkg": 22.8202
+            }
+          ]
+        }
+      ]
+    },
+    "checks": {
+      "condenserHeatingConstantHumidityRatioError": 0.0,
+      "drumMoisturePickupPositive": true,
+      "evaporatorDehumidificationPositive": true,
+      "coilBelowDrumOutletDewPoint": true
+    }
+  }
+}

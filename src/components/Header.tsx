@@ -26,7 +26,7 @@ export function Header() {
           </button>
         ))}
       </nav>
-      <div className="stage-tag"><span>STAGE 02</span>三机型结构模型</div>
+      <div className="stage-tag"><span>STAGE 03</span>双循环与物性联动</div>
     </header>
   )
 }

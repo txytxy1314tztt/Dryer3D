@@ -12,21 +12,21 @@ test('stage 2 models, views and fullscreen remain interactive without console er
     await page.getByTestId(`machine-${machine}`).click()
     await page.locator('label', { hasText: '视角' }).locator('select').selectOption('internal')
     await page.waitForTimeout(450)
-    await page.screenshot({ path: `docs/screenshots/stage2-${machine}-internal.png` })
+    await page.screenshot({ path: `test-results/stage2-${machine}-internal.png` })
   }
   await page.locator('label', { hasText: '视角' }).locator('select').selectOption('exploded')
   await page.getByTestId('camera-front').click()
   await page.waitForTimeout(900)
-  await page.screenshot({ path: 'docs/screenshots/stage2-front-exploded.png' })
+  await page.screenshot({ path: 'test-results/stage2-front-exploded.png' })
 
   await page.getByTestId('camera-side').click()
   await page.waitForTimeout(900)
-  await page.screenshot({ path: 'docs/screenshots/stage2-side-exploded.png' })
+  await page.screenshot({ path: 'test-results/stage2-side-exploded.png' })
 
   await page.getByTestId('fullscreen-toggle').click()
   await expect(page.locator('.scene-panel')).toHaveClass(/scene-expanded/)
   await page.waitForTimeout(750)
-  await page.screenshot({ path: 'docs/screenshots/stage2-fullscreen.png' })
+  await page.screenshot({ path: 'test-results/stage2-fullscreen.png' })
   await page.getByTestId('fullscreen-toggle').click()
   await expect(page.locator('.scene-panel')).not.toHaveClass(/scene-expanded/)
 
@@ -45,7 +45,7 @@ test('stage 2 models, views and fullscreen remain interactive without console er
       domNodes: document.querySelectorAll('*').length,
     }
   })
-  writeFileSync('docs/STAGE2_BROWSER_METRICS.json', `${JSON.stringify(perf, null, 2)}\n`)
+  writeFileSync('test-results/stage2-browser-metrics.json', `${JSON.stringify(perf, null, 2)}\n`)
   expect(perf.canvasCount).toBe(1)
   expect(perf.domNodes).toBeLessThan(500)
   expect(runtimeErrors).toEqual([])

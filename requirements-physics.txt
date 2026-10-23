@@ -1,0 +1,3 @@
+# Offline data-generation dependency only; not required by the browser application.
+CoolProp==7.2.0
+numpy==2.4.6

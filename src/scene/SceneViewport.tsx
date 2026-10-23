@@ -10,6 +10,7 @@ export function SceneViewport() {
   const cameraPreset = useTeachingStore((state) => state.cameraPreset)
   const setCameraPreset = useTeachingStore((state) => state.setCameraPreset)
   const labelMode = useTeachingStore((state) => state.labelMode)
+  const selectedComponent = useTeachingStore((state) => state.selectedComponent)
   const setLabelMode = useTeachingStore((state) => state.setLabelMode)
   const [expanded, setExpanded] = useState(false)
   const [diagnostics, setDiagnostics] = useState('初始化 WebGL…')
@@ -44,6 +45,7 @@ export function SceneViewport() {
           <span>拖拽旋转 · 滚轮缩放 · 点击部件</span>
           <span>{diagnostics}</span>
         </div>
+        {(selectedComponent === 'condenser' || selectedComponent === 'evaporator') && <div className="heat-exchange-note" data-testid="heat-exchange-detail"><strong>{selectedComponent === 'condenser' ? '冷凝器局部换热' : '蒸发器局部换热'}</strong><span>{selectedComponent === 'condenser' ? '冷媒 → 壁面 → 空气' : '湿空气 → 壁面 → 冷媒'}</span><small>间接换热 · 两流体不混合</small></div>}
       </div>
     </section>
   )

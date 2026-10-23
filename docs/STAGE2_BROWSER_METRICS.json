@@ -1,9 +1,9 @@
 {
-  "observedAt": "2026-10-23T13:39:37.523Z",
+  "observedAt": "2026-10-23T14:06:41.145Z",
   "scope": "local Chrome run; indicative only, not a hardware-independent FPS guarantee",
-  "observedRafCallbackHz": 240.57738574874023,
-  "loadEventMs": 67,
+  "observedRafCallbackHz": 240.96385542168676,
+  "loadEventMs": 73.30000007152557,
   "canvasCount": 1,
   "dpr": 1,
-  "domNodes": 236
+  "domNodes": 399
 }

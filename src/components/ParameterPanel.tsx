@@ -1,6 +1,8 @@
 import { getMachine } from '../models/catalog'
 import { componentDefinitions, componentLabel } from '../models/engineering'
 import { useTeachingStore } from '../state/teachingStore'
+import { useThermoData } from '../thermo/useThermoData'
+import { EnergyFlow } from './EnergyFlow'
 
 const processLabels: Record<string, string> = {
   '1-2': '压缩 Compression',
@@ -15,6 +17,7 @@ const processLabels: Record<string, string> = {
 export function ParameterPanel() {
   const state = useTeachingStore()
   const machine = getMachine(state.machine)
+  const { data, error } = useThermoData()
   const selected = state.selectedComponent && state.selectedComponent in componentDefinitions
     ? componentDefinitions[state.selectedComponent as keyof typeof componentDefinitions]
     : null
@@ -33,15 +36,27 @@ export function ParameterPanel() {
         <div><dt>当前过程</dt><dd data-testid="selected-process">{state.selectedProcess ? processLabels[state.selectedProcess] : '未选择'}</dd></div>
       </dl>
       {selected && <section className="component-note"><strong>{selected.label}</strong><p>{selected.note}</p></section>}
-      <div className="placeholder-data">
-        <div><span>压力 Pressure</span><strong>— <small>MPa</small></strong></div>
-        <div><span>温度 Temperature</span><strong>— <small>°C</small></strong></div>
-        <div><span>比焓 Enthalpy</span><strong>— <small>kJ/kg</small></strong></div>
-        <p>阶段 1 不生成或展示虚构物性数值。</p>
-      </div>
+      {error && <div className="data-error">{error}</div>}
+      {machine.id === 'heat-pump' && data && <>
+        <div className="state-table" data-testid="refrigerant-states">
+          <div className="state-head"><span>点</span><span>MPa</span><span>°C</span><span>kJ/kg</span><span>相态/x</span></div>
+          {data.refrigerant.states.map((point) => <button key={point.id} className={state.selectedProcess === data.refrigerant.processes.find((p) => p.from === point.id)?.id ? 'active' : ''} onClick={() => {
+            const process = data.refrigerant.processes.find((p) => p.from === point.id)!
+            state.selectProcess(process.id, process.component)
+          }}>
+            <strong>{point.id}</strong><span>{point.pressureMPa.toFixed(3)}</span><span>{point.temperatureC.toFixed(1)}</span><span>{point.enthalpyKJkg.toFixed(1)}</span><span>{point.quality === null ? (point.phase === 'gas' ? '气相' : '液相') : `两相/${point.quality.toFixed(3)}`}</span>
+          </button>)}
+        </div>
+        <div className="humid-state-grid" data-testid="humid-air-states">
+          {data.humidAir.states.map((point) => <div key={point.id}><strong>{point.id}</strong><span>{point.dryBulbC.toFixed(0)} °C</span><span>RH {(point.relativeHumidity*100).toFixed(1)}%</span><span>W {(point.humidityRatioKgKgDryAir*1000).toFixed(2)} g/kg</span><span>h {point.enthalpyKJkgDryAir.toFixed(1)} kJ/kg</span></div>)}
+        </div>
+        <EnergyFlow />
+        <details className="assumption-details"><summary>工况假设与适用范围</summary><p>R134a：蒸发 5 °C、冷凝 50 °C、过热 8 K、过冷 5 K、压缩机等熵效率 0.70；忽略换热器压降，节流近似等焓。</p><p>湿空气：101.325 kPa；A/B/C 为蒸发器出口、冷凝器出口、滚筒出口的离散教学点。不是衣物动态干燥模型。</p></details>
+        <p className="data-provenance">CoolProp {data.library.version} · 算法 {data.algorithmVersion} · 静态教学工况</p>
+      </>}
       <section className="depth-copy">
         <h4>{state.depth === 'basic' ? '基础讲解' : '工程深入'}</h4>
-        <p>{state.depth === 'basic' ? '先识别部件、流向和换热方向。' : '阶段 3 将展开状态方程、假设、相区、能量平衡与引用。'}</p>
+        <p>{state.depth === 'basic' ? '先识别部件、流向和换热方向。' : '查看状态点、相区、露点、单位质量能量平衡与计算边界。'}</p>
       </section>
     </aside>
   )

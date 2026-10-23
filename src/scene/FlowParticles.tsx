@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { CatmullRomCurve3, Vector3 } from 'three'
 import { useTeachingStore } from '../state/teachingStore'
+import { processComponentMap } from '../state/teachingStore'
 
 type FlowParticlesProps = {
   kind: 'air' | 'refrigerant'
@@ -8,16 +9,21 @@ type FlowParticlesProps = {
   color: string
   count?: number
   closed?: boolean
+  processId?: string
+  variant?: 'air' | 'gas' | 'liquid' | 'two-phase'
 }
 
-export function FlowParticles({ kind, points, color, count = 8, closed = true }: FlowParticlesProps) {
+export function FlowParticles({ kind, points, color, count = 8, closed = true, processId, variant = kind === 'air' ? 'air' : 'liquid' }: FlowParticlesProps) {
   const progress = useTeachingStore((state) => state.teachingProgress)
   const circuit = useTeachingStore((state) => state.circuit)
+  const selectedProcess = useTeachingStore((state) => state.selectedProcess)
+  const selectProcess = useTeachingStore((state) => state.selectProcess)
   const curve = useMemo(
     () => new CatmullRomCurve3(points.map((point) => new Vector3(...point)), closed),
     [points, closed],
   )
   const visible = circuit === 'both' || circuit === kind
+  const emphasized = !selectedProcess || !processId || selectedProcess === processId
 
   if (!visible) return null
 
@@ -25,10 +31,15 @@ export function FlowParticles({ kind, points, color, count = 8, closed = true }:
     <group>
       {Array.from({ length: count }, (_, index) => {
         const position = curve.getPoint((progress + index / count) % 1)
+        const radius = variant === 'gas' ? .046 : variant === 'liquid' ? .03 : variant === 'two-phase' ? (index % 2 ? .05 : .026) : .043
         return (
-          <mesh key={index} position={position}>
-            <sphereGeometry args={[kind === 'air' ? 0.045 : 0.035, 10, 10]} />
-            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.2} />
+          <mesh key={index} position={position} scale={emphasized ? 1.15 : .78} onClick={(event) => {
+            if (!processId) return
+            event.stopPropagation()
+            selectProcess(processId, processComponentMap[processId] ?? null)
+          }}>
+            <sphereGeometry args={[radius, 10, 10]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={emphasized ? 1.4 : .25} transparent opacity={emphasized ? 1 : .28} />
           </mesh>
         )
       })}

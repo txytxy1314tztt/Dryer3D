@@ -1,6 +1,6 @@
 # 系统架构与阶段实现
 
-状态：阶段 1 已验收；阶段 2 模型已实现并等待验收。
+状态：阶段 1、2 已验收；阶段 3 双循环与物理联动已实现并等待验收。
 
 ## 产品边界
 
@@ -87,4 +87,27 @@ docs/            来源、审查、验收和维护记录
 - 相机预设只在选择后驱动到目标位，完成后恢复 OrbitControls 自由旋转；避免预设持续覆盖用户操作。
 - 标签为本地 CanvasTexture 精灵，随部件移动并始终面向相机；默认只显示优先部件或当前选中部件，以减少遮挡。
 - 全屏采用浏览器窗口内固定覆盖层，不销毁 Canvas 或统一状态，因此退出后保留布局、相机和播放状态。
+
+## 阶段 3 数据与同步
+
+```mermaid
+flowchart LR
+  Py[Python + CoolProp] --> Gen[版本化生成脚本]
+  Gen --> JSON[离线物性 JSON]
+  JSON --> Hook[单例数据加载与 schema 检查]
+  Hook --> PH[真实 P-h 图]
+  Hook --> Psych[真实焓湿图]
+  Hook --> Energy[单位质量能量流]
+  Store[统一教学状态] <--> PH
+  Store <--> Psych
+  Store <--> Energy
+  Store <--> Scene[分段 3D 双循环]
+  Store <--> Timeline[八步教学时间线]
+```
+
+- Python 只在构建/维护时运行，静态前端不依赖 Python 后端。
+- JSON 是图表、参数表和能量流的唯一数值来源；图中状态点与右侧数值不各自维护副本。
+- `selectedProcess`、`selectedComponent`、`step`、`circuit` 和 `teachingProgress` 在单次领域动作中同步更新。
+- P-h/焓湿状态点、能量按钮、3D 部件与教学步骤使用同一过程标识；点击任一入口都会高亮对应消费者。
+- 双循环的所有稳态段同时运动，教学步骤仅改变强调对象，不暗示部件按步骤启停。
 

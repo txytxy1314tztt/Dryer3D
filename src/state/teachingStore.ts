@@ -75,13 +75,13 @@ export const useTeachingStore = create<TeachingState>()(
       setLabelMode: (labelMode) => set({ labelMode }),
       togglePlaying: () => set((state) => ({ playing: !state.playing })),
       setSpeed: (speed) => set({ speed }),
-      setStep: (step) => set({ step, teachingProgress: step / 3 }),
+      setStep: (step) => set({ step, teachingProgress: step / 7 }),
       advanceProgress: (delta) =>
         set((state) => ({ teachingProgress: (state.teachingProgress + delta) % 1 })),
       selectComponent: (selectedComponent, selectedProcess = null) =>
-        set({ selectedComponent, selectedProcess }),
+        set((state) => syncSelection(state, selectedComponent, selectedProcess)),
       selectProcess: (selectedProcess, selectedComponent = null) =>
-        set({ selectedProcess, selectedComponent }),
+        set((state) => syncSelection(state, selectedComponent, selectedProcess)),
       reset: () => set(defaultTeachingState),
     }),
     {
@@ -112,4 +112,26 @@ export const processComponentMap: Record<string, string> = {
   heating: 'condenser',
   humidifying: 'drum',
   dehumidifying: 'evaporator',
+}
+
+const processStepMap: Record<string, number> = {
+  '1-2': 1, '2-3': 2, '3-4': 3, '4-1': 4,
+  heating: 5, humidifying: 6, dehumidifying: 7,
+}
+
+const processCircuitMap: Record<string, CircuitVisibility> = {
+  '1-2': 'refrigerant', '2-3': 'both', '3-4': 'refrigerant', '4-1': 'both',
+  heating: 'air', humidifying: 'air', dehumidifying: 'both',
+}
+
+function syncSelection(state: TeachingState, selectedComponent: string | null, selectedProcess: string | null) {
+  if (!selectedProcess || !(selectedProcess in processStepMap)) return { selectedComponent, selectedProcess }
+  const step = processStepMap[selectedProcess]
+  return {
+    selectedComponent,
+    selectedProcess,
+    step,
+    circuit: processCircuitMap[selectedProcess],
+    teachingProgress: step / 7,
+  }
 }
