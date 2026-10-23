@@ -1,0 +1,17 @@
+{
+  "project": "chrome",
+  "runtimeErrors": [],
+  "failedRequests": [],
+  "metrics": {
+    "measuredAtUtc": "2026-10-23T14:26:56.166Z",
+    "scope": "local automated browser observation; not a universal hardware guarantee",
+    "loadEventMs": 75.79999995231628,
+    "domNodes": 415,
+    "resourceCount": 4,
+    "transferBytes": 1200,
+    "observedRafCallbackHz": 88.75739644970415,
+    "usedJSHeapBytes": 25739866,
+    "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium) / WebKit WebGL",
+    "canvasCount": 1
+  }
+}

@@ -14,14 +14,14 @@ body { margin: 0; min-width: 1180px; min-height: 100vh; background: radial-gradi
 button, select { font: inherit; }
 button { color: inherit; }
 .app-shell { height: 100vh; min-height: 680px; display: grid; grid-template-rows: 76px minmax(0, 1fr) 34px; overflow: hidden; }
-.app-header { display: grid; grid-template-columns: 340px 1fr 150px; align-items: center; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--line); background: rgba(5, 14, 20, 0.93); backdrop-filter: blur(16px); }
+.app-header { display: grid; grid-template-columns: 310px 1fr 285px; align-items: center; gap: 18px; padding: 0 20px; border-bottom: 1px solid var(--line); background: rgba(5, 14, 20, 0.93); backdrop-filter: blur(16px); }
 .brand { display: flex; gap: 12px; align-items: center; }
 .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #58e0b6; color: #58e0b6; font-weight: 800; letter-spacing: -1px; clip-path: polygon(0 0, 82% 0, 100% 18%, 100% 100%, 18% 100%, 0 82%); }
 .brand strong, .brand span { display: block; }
 .brand strong { font-size: 15px; letter-spacing: .04em; }
 .brand div span { margin-top: 3px; color: var(--muted); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .machine-tabs { height: 100%; display: flex; justify-content: center; }
-.machine-tabs button { position: relative; width: 190px; border: 0; border-left: 1px solid var(--line); background: transparent; cursor: pointer; }
+.machine-tabs button { position: relative; width: 165px; border: 0; border-left: 1px solid var(--line); background: transparent; cursor: pointer; }
 .machine-tabs button:last-child { border-right: 1px solid var(--line); }
 .machine-tabs button::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 0; height: 2px; background: transparent; }
 .machine-tabs button.active { background: linear-gradient(180deg, transparent, rgba(88,224,182,.08)); }
@@ -31,6 +31,9 @@ button { color: inherit; }
 .machine-tabs small { color: var(--muted); margin-top: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
 .stage-tag { justify-self: end; color: var(--muted); font-size: 11px; text-align: right; }
 .stage-tag span { display: block; color: var(--cyan); font-weight: 700; letter-spacing: .16em; }
+.header-tools { display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
+.header-tools > button { border: 1px solid var(--line); background: #091820; color: #a9c4ca; padding: 7px 8px; font-size: 9px; cursor: pointer; }
+.header-tools > button:hover { border-color: var(--cyan); color: #eafff8; }
 .workbench { display: grid; grid-template-columns: 254px minmax(620px, 1fr) 284px; min-height: 0; }
 .control-rail, .parameter-panel { background: rgba(7,18,25,.78); border-color: var(--line); border-style: solid; overflow: auto; }
 .control-rail { border-width: 0 1px 0 0; padding: 18px; }
@@ -53,7 +56,7 @@ button { color: inherit; }
 .boundary-note .section-number { position: static; color: var(--orange); }
 .boundary-note strong { font-size: 11px; color: #ffd3a6; }
 .boundary-note p { margin: 5px 0 0; color: #c5a883; font-size: 10px; line-height: 1.55; }
-.center-stage { min-width: 0; display: grid; grid-template-rows: minmax(350px, 1fr) 52px 268px; }
+.center-stage { min-width: 0; min-height: 0; height: 100%; overflow: hidden; display: grid; grid-template-rows: minmax(350px, 1fr) 52px 268px; }
 .scene-loading { display: grid; place-items: center; color: var(--muted); font-size: 12px; border-bottom: 1px solid var(--line); }
 .scene-panel { min-height: 0; display: grid; grid-template-rows: 62px 1fr; }
 .scene-heading { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; border-bottom: 1px solid var(--line); }
@@ -169,4 +172,25 @@ button { color: inherit; }
 .component-note p { margin: 5px 0 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
 footer { display: flex; align-items: center; justify-content: space-between; padding: 0 22px; border-top: 1px solid var(--line); color: #5f7a82; background: #050b0f; font-size: 9px; letter-spacing: .07em; }
 .footer-warning { color: #d5a366; }
+.drawer-backdrop { position: fixed; inset: 0; z-index: 1200; display: grid; place-items: center; padding: 34px; background: rgba(1,7,10,.82); backdrop-filter: blur(5px); }
+.knowledge-drawer { width: min(1180px, 96vw); max-height: 90vh; overflow: auto; border: 1px solid rgba(88,224,182,.35); background: #071219; box-shadow: 0 24px 90px #000; }
+.drawer-title { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); background: rgba(7,18,25,.97); }
+.drawer-title h2 { margin: 5px 0 0; font-size: 20px; }
+.drawer-title button { border: 1px solid var(--line); background: #0b1b22; color: #b7d0d5; padding: 7px 10px; cursor: pointer; }
+.comparison-table { min-width: 900px; padding: 16px 20px 0; }
+.comparison-row { display: grid; grid-template-columns: 180px repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+.comparison-row > * { padding: 11px 12px; border-right: 1px solid var(--line); }
+.comparison-row > *:last-child { border-right: 0; }
+.comparison-row > strong { color: #b9d4d8; font-size: 10px; }
+.comparison-row span { display: block; color: #d9e8ea; font-size: 10px; line-height: 1.5; }
+.comparison-row small { display: block; margin-top: 6px; color: #73949c; font-size: 8px; line-height: 1.55; }
+.comparison-head { position: sticky; top: 73px; background: #0a1920; }
+.comparison-head strong:not(:first-child) { color: var(--cyan); font-size: 12px; }
+.comparison-head small { color: #77959d; font-weight: 400; }
+.source-note { margin: 14px 20px 20px; color: #7c9aa1; font-size: 9px; }
+.references-view { max-width: 850px; padding: 18px 24px 28px; color: #a8c0c5; font-size: 11px; line-height: 1.7; }
+.references-view a { color: #69d7ff; }
+.references-view code { color: #f0d18c; }
+.references-view h3 { margin-top: 22px; color: #e5f3f4; }
+.warning-copy { padding: 10px; border: 1px solid rgba(255,159,67,.35); color: #e4b578; background: rgba(255,159,67,.06); }
 @media (max-height: 800px) { .center-stage { grid-template-rows: minmax(300px, 1fr) 52px 230px; } .chart-card svg { height: 165px; } }

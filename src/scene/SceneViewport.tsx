@@ -4,6 +4,7 @@ import { getMachine } from '../models/catalog'
 import { useTeachingStore } from '../state/teachingStore'
 import { EngineeringMachine } from './EngineeringMachine'
 import type { CameraPreset, LabelMode } from '../state/teachingStore'
+import { useResolvedQuality } from './quality'
 
 export function SceneViewport() {
   const machine = useTeachingStore((state) => state.machine)
@@ -14,6 +15,8 @@ export function SceneViewport() {
   const setLabelMode = useTeachingStore((state) => state.setLabelMode)
   const [expanded, setExpanded] = useState(false)
   const [diagnostics, setDiagnostics] = useState('初始化 WebGL…')
+  const quality = useResolvedQuality()
+  const dpr: [number, number] = quality === 'high' ? [1, 1.75] : quality === 'balanced' ? [1, 1.25] : [1, 1]
   const definition = getMachine(machine)
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setExpanded(false) }
@@ -30,7 +33,7 @@ export function SceneViewport() {
         <div className="scene-actions"><span className="status-chip">教学示意 · 非真实尺寸</span><button data-testid="fullscreen-toggle" onClick={() => setExpanded((v) => !v)}>{expanded ? '退出全屏' : '3D 全屏'}</button></div>
       </div>
       <div className="canvas-wrap" data-testid="scene-canvas">
-        <Canvas camera={{ position: [5.4, 3.6, 6.6], fov: 38 }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => setDiagnostics(`WebGL ${gl.capabilities.isWebGL2 ? '2' : '1'} · DPR ≤ 1.5`)}>
+        <Canvas camera={{ position: [5.4, 3.6, 6.6], fov: 38 }} dpr={dpr} gl={{ antialias: quality !== 'low', powerPreference: quality === 'low' ? 'default' : 'high-performance' }} onCreated={({ gl }) => setDiagnostics(`WebGL ${gl.capabilities.isWebGL2 ? '2' : '1'} · ${quality} · DPR ≤ ${dpr[1]}`)}>
           <Suspense fallback={null}>
             <EngineeringMachine machine={machine} />
           </Suspense>

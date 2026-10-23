@@ -9,6 +9,7 @@ import type { DryerType } from '../models/catalog'
 import { componentDefinitions, type ComponentId } from '../models/engineering'
 import { useTeachingStore, type CameraPreset } from '../state/teachingStore'
 import { FlowParticles } from './FlowParticles'
+import { useResolvedQuality } from './quality'
 
 type V3 = [number, number, number]
 
@@ -255,10 +256,11 @@ function CameraRig() {
 }
 
 export function EngineeringMachine({ machine }: { machine: DryerType }) {
+  const quality = useResolvedQuality()
   return <>
     <color attach="background" args={['#07121a']} />
     <ambientLight intensity={1.25} />
-    <directionalLight position={[4,6,5]} intensity={2.5} color="#dcf5ff" castShadow />
+    <directionalLight position={[4,6,5]} intensity={2.5} color="#dcf5ff" castShadow={quality === 'high'} />
     <pointLight position={[-4,1,2]} intensity={12} color="#1d7f9b" distance={8} />
     <gridHelper args={[12,24,'#1b5060','#102832']} position={[0,-1.74,0]} />
     <group rotation={[0,-.18,0]} onPointerMissed={() => useTeachingStore.getState().selectComponent(null)}>

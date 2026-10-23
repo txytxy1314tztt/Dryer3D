@@ -1,4 +1,4 @@
-import { useTeachingStore, type CircuitVisibility, type ViewMode } from '../state/teachingStore'
+import { useTeachingStore, type CircuitVisibility, type QualityLevel, type ViewMode } from '../state/teachingStore'
 
 export function TransportBar() {
   const state = useTeachingStore()
@@ -24,6 +24,11 @@ export function TransportBar() {
       <label>视角
         <select value={state.viewMode} onChange={(event) => state.setViewMode(event.target.value as ViewMode)}>
           <option value="exterior">工程整机</option><option value="transparent">透明</option><option value="section">剖切示意</option><option value="internal">内部工作</option><option value="exploded">爆炸教学</option>
+        </select>
+      </label>
+      <label>画质
+        <select data-testid="quality-select" value={state.quality} onChange={(event) => state.setQuality(event.target.value as QualityLevel)}>
+          <option value="auto">自动</option><option value="high">高</option><option value="balanced">均衡</option><option value="low">低</option>
         </select>
       </label>
       <button className="text-button" onClick={state.reset}>重置</button>

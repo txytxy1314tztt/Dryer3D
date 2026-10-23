@@ -1,6 +1,6 @@
 # 参考资料与来源登记
 
-访问日期：2026-10-22（Asia/Shanghai）
+访问日期：2026-10-23（Asia/Shanghai）
 
 ## A 级：官方文档、权威机构与标准实现
 
@@ -77,3 +77,14 @@ Zustand 未采用 2026-10-22 当天发布的 5.0.16；项目固定 5.0.15，从�
 - R134a 状态、饱和穹顶和相态使用 `PropsSI` / `PhaseSI`；湿空气状态、RH 曲线和等焓线使用 `HAPropsSI`。
 - 官方 R134a、Humid Air 和 High-Level API 页面是原理与接口依据；项目工况假设、计算过程和适用边界见 `docs/PHYSICS_METHOD.md`。
 - 未采用普通教程中的手绘 P-h 数值、经验 COP 或未经验证的焓湿图坐标。
+
+## 阶段 4 部署资料（只用于方案比较）
+
+| 官方来源 | 用途 | 当前决策 |
+|---|---|---|
+| [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) | 公共仓库条件、站点/带宽/构建限制 | 仅候选；项目页部署前需配置 Vite 子路径 |
+| [Cloudflare Pages limits](https://developers.cloudflare.com/pages/platform/limits/) | 构建、文件、项目和域名限制 | 仅候选；未创建项目 |
+| [Cloudflare Pages pricing](https://developers.cloudflare.com/pages/functions/pricing/) | 静态资产请求与 Functions 计费边界 | 本项目不需要 Functions |
+| [Netlify credit-based plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) | 免费层、信用点和暂停行为 | 仅候选；信用点复杂度较高 |
+
+没有进行公开部署、账户连接或令牌配置。完整比较见 `docs/DEPLOYMENT_OPTIONS.md`。

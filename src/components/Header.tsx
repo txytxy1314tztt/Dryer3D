@@ -1,7 +1,8 @@
 import { machineCatalog } from '../models/catalog'
 import { useTeachingStore } from '../state/teachingStore'
+import type { InfoPanel } from './KnowledgeDrawer'
 
-export function Header() {
+export function Header({ onOpenInfo }: { onOpenInfo: (panel: Exclude<InfoPanel, null>) => void }) {
   const machine = useTeachingStore((state) => state.machine)
   const setMachine = useTeachingStore((state) => state.setMachine)
   return (
@@ -26,7 +27,7 @@ export function Header() {
           </button>
         ))}
       </nav>
-      <div className="stage-tag"><span>STAGE 03</span>双循环与物性联动</div>
+      <div className="header-tools"><button data-testid="open-comparison" onClick={() => onOpenInfo('comparison')}>机型对比</button><button data-testid="open-references" onClick={() => onOpenInfo('references')}>资料/版权</button><div className="stage-tag"><span>STAGE 04</span>整合验收版</div></div>
     </header>
   )
 }

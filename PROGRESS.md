@@ -4,45 +4,30 @@
 
 ## 当前里程碑
 
-阶段 3 的双循环动画、CoolProp 离线数据、真实图表和统一联动已完成，等待用户验收物理计算。明确暂停，不进入阶段 4。
+阶段 4 本地候选交付已完成。三机型比较、双层解释、版权入口、学习设置、画质自适应和 Windows 脚本已整合；Chrome/Edge 全量 E2E 与物理一致性测试通过。项目在最终本地验收点暂停，未公开部署。
 
-## 已完成
+## 阶段 4 新增
 
-1. `references/热泵干衣机两个循环-9-30-陶新雨.pptx` 可读取，大小 318,096,458 bytes，共 13 页。
-2. 生成 `docs/ppt_extract.json` 和 `docs/PPT_RAW_EXTRACT.md`，覆盖逐页文字、备注、对象类型及包内媒体统计。
-3. 通过本机 PowerPoint 16.0.20326.20232 只读导出 13 张 1600 × 900 PNG，并逐页检查。
-4. 发现 PPT 的物理、算术和证据问题，见 `docs/PPT_REVIEW.md`。
-5. 完成本地工具链清单、架构草案、风险清单和待审批候选清单。
-6. 通过官方文档和 npm registry 核验核心依赖、许可证、兼容性与维护时间；生产依赖审计未发现已知漏洞。
-7. 创建 React 19 + TypeScript 7 + Vite 8 + React Three Fiber 9 骨架，包含三种机型、程序化 3D、统一状态、工作台与双图表占位。
-8. 开发服务器在 `http://127.0.0.1:5173/` 启动成功，Vite ready 用时 161 ms。
-9. 单元测试 3/3 通过；生产构建通过；系统 Chrome 155 Playwright E2E 1/1 通过且控制台无错误。
-10. 最终验收截图保存为 `docs/screenshots/stage1-workbench.png`。
-11. 阶段 1 已经用户验收；阶段 2 未改动物性数据与双图表占位边界。
-12. 新增三机型结构模型：直排式开式排风、空气冷凝式闭式过程空气/独立冷却空气、热泵式闭式空气循环与制冷回路。
-13. 热泵模型包含滚筒、风机、绒毛过滤器、压缩机、冷凝器、毛细管、蒸发器、接水盘、排水路径、风道与铜管。
-14. 五种结构模式和五种相机预设已接入统一 Zustand 状态，爆炸布局和透明度采用逐帧阻尼过渡。
-15. 关键标签使用本地 CanvasTexture 生成，无网络字体或门户 DOM；支持固定关键、悬停、点击选中和关闭。
-16. 3D 全屏在浏览器窗口内覆盖工作台，退出后保留机型、相机、选中部件、布局和播放状态。
-17. 单元测试 6/6、生产构建、系统 Chrome E2E 2/2 通过；E2E 监听到的 pageerror/console.error 均为空。
-18. 截图和浏览器观察指标已保存于 `docs/screenshots/` 与 `docs/STAGE2_BROWSER_METRICS.json`。
-19. 阶段 2 已经用户验收；阶段 3 在项目 `.venv` 固定 CoolProp 7.2.0 和 NumPy 2.4.6，仅用于构建期数据生成。
-20. `scripts/physics/generate_data.py` 生成 107,855 bytes 的版本化离线 JSON，浏览器无需 Python 后端。
-21. R134a 工况：蒸发 5 °C、冷凝 50 °C、过热 8 K、过冷 5 K、等熵效率 0.70；状态 4 干度 0.29344。
-22. 单位质量结果：压缩功 41.1753、蒸发吸热 144.9042、冷凝放热 186.0795 kJ/kg，供热循环 COP 4.5192；明确不等同实测整机 COP。
-23. 湿空气工况：101.325 kPa，A=20 °C/85%RH、B=50 °C/16.08%RH、C=35 °C/60%RH；凝结量示意 0.0090448 kg/kg 干空气。
-24. 实现八步教学时间线、分段双循环粒子、相态差异表达、冷凝器/蒸发器局部间接换热视图。
-25. P-h 图、焓湿图、能量流图、3D 部件、循环选择和时间线共享统一 Zustand 状态。
-26. Python 物理测试 7/7、Vitest 11/11、生产构建、Chrome E2E 3/3 全部通过；最终浏览器控制台错误为空。
+1. `src/content/comparison.ts` 提供三类机型十维对比；不凭空给出能耗、价格或寿命数字。
+2. `src/content/explanations.ts` 为 7 个冷媒/空气过程提供基础与工程深入内容。
+3. `KnowledgeDrawer` 提供工程对比和资料/版权入口，外部链接标注用途与边界。
+4. 设置白名单持久化机型、教学层级、结构/相机/标注/循环/画质、倍速与最后步骤；重置恢复默认值。
+5. 自动画质根据 `devicePixelRatio`、`hardwareConcurrency`、`deviceMemory`（存在时）和 `prefers-reduced-motion` 选择档位；用户可手动覆盖。
+6. Chrome 155.0.8059.85 与 Edge 155.0.4283.62 的 8 个 E2E 组合全部通过；失败请求、`pageerror`、`console.error` 均为空。
+7. 最终构建：主包 255.70 kB（gzip 81.39 kB），延迟 WebGL 场景 944.13 kB（gzip 251.34 kB）。后者仍有 Vite 大块警告。
+8. Windows 提供 `start.bat`、`start-production.bat`、`check-all.bat`。
 
-## 阻塞
+## 最终本地验证摘要
 
-- CoolProp 已安装在项目隔离 `.venv`，不进入网页运行时；新环境需按 `requirements-physics.txt` 重建。
-- Blender 未安装。阶段 1 和程序化占位模型不需要 Blender，因此不会阻塞骨架。
-- 延迟加载后的 WebGL 场景块压缩前约 932.38 kB，Vite 保留大块警告。初始 UI 主包为 237.56 kB；进一步拆分列入阶段 2/4 性能工作。
-- 阶段 2 WebGL 场景块为 940.11 kB（gzip 250.21 kB），仍有 Vite 大块警告；没有掩盖该警告，深入拆包与低画质档位保留到阶段 4。
+- Vitest：4 个文件，14/14 通过。
+- Python unittest：7/7 通过。
+- Playwright：Chrome/Edge 共 8/8 通过。
+- TypeScript：`tsc -b` 通过。
+- Vite 生产构建：通过，589 modules。
+- 浏览器资源与错误：两浏览器 JSON 200；失败请求、控制台错误和页面异常均为 0。
+- 性能：仅为本机自动化观察，详见 `docs/TEST_REPORT.md`；不作为跨硬件 FPS 保证。
 
-## 下一步
+## 暂停点
 
-等待用户验收阶段 3 双循环与物理计算。只有收到明确批准后才进入阶段 4 的完整教学内容、兼容性矩阵和最终优化。
+等待用户审核阶段 4 本地交付，并选择 GitHub Pages、Cloudflare Pages、Netlify 或不部署。只有获得明确平台选择和公开部署授权后，才会配置或执行部署。
 

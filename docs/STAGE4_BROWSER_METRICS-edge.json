@@ -1,0 +1,17 @@
+{
+  "project": "edge",
+  "runtimeErrors": [],
+  "failedRequests": [],
+  "metrics": {
+    "measuredAtUtc": "2026-10-23T14:26:55.687Z",
+    "scope": "local automated browser observation; not a universal hardware guarantee",
+    "loadEventMs": 66.60000002384186,
+    "domNodes": 415,
+    "resourceCount": 4,
+    "transferBytes": 1200,
+    "observedRafCallbackHz": 98.16753925935701,
+    "usedJSHeapBytes": 28805939,
+    "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium) / WebKit WebGL",
+    "canvasCount": 1
+  }
+}

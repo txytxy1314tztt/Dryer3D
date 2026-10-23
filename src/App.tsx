@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { PhChart } from './charts/PhChart'
 import { PsychrometricChart } from './charts/PsychrometricChart'
 import { ControlRail } from './components/ControlRail'
@@ -6,6 +6,7 @@ import { Header } from './components/Header'
 import { ParameterPanel } from './components/ParameterPanel'
 import { TransportBar } from './components/TransportBar'
 import { useTeachingClock } from './animations/useTeachingClock'
+import { KnowledgeDrawer, type InfoPanel } from './components/KnowledgeDrawer'
 
 const SceneViewport = lazy(() =>
   import('./scene/SceneViewport').then((module) => ({ default: module.SceneViewport })),
@@ -13,9 +14,10 @@ const SceneViewport = lazy(() =>
 
 export function App() {
   useTeachingClock()
+  const [infoPanel, setInfoPanel] = useState<InfoPanel>(null)
   return (
     <div className="app-shell">
-      <Header />
+      <Header onOpenInfo={setInfoPanel} />
       <main className="workbench">
         <ControlRail />
         <div className="center-stage">
@@ -31,10 +33,11 @@ export function App() {
         <ParameterPanel />
       </main>
       <footer>
-        <span>阶段 3 物理联动候选 · 2026-10-23</span>
+        <span>阶段 4 本地验收候选 · 2026-10-23</span>
         <span>SI units · 中文 UI / English terminology</span>
         <span className="footer-warning">非实机标定性能仿真</span>
       </footer>
+      <KnowledgeDrawer panel={infoPanel} onClose={() => setInfoPanel(null)} />
     </div>
   )
 }

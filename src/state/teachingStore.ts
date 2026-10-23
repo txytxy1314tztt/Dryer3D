@@ -8,6 +8,7 @@ export type CircuitVisibility = 'air' | 'refrigerant' | 'both'
 export type ViewMode = 'exterior' | 'transparent' | 'section' | 'internal' | 'exploded'
 export type CameraPreset = 'perspective' | 'front' | 'side' | 'top' | 'internal'
 export type LabelMode = 'key' | 'hover' | 'selected' | 'off'
+export type QualityLevel = 'auto' | 'high' | 'balanced' | 'low'
 
 export type TeachingState = {
   machine: DryerType
@@ -17,6 +18,7 @@ export type TeachingState = {
   viewMode: ViewMode
   cameraPreset: CameraPreset
   labelMode: LabelMode
+  quality: QualityLevel
   playing: boolean
   speed: 0.5 | 1 | 2
   step: number
@@ -30,6 +32,7 @@ export type TeachingState = {
   setViewMode: (viewMode: ViewMode) => void
   setCameraPreset: (cameraPreset: CameraPreset) => void
   setLabelMode: (labelMode: LabelMode) => void
+  setQuality: (quality: QualityLevel) => void
   togglePlaying: () => void
   setSpeed: (speed: 0.5 | 1 | 2) => void
   setStep: (step: number) => void
@@ -47,6 +50,7 @@ export const defaultTeachingState = {
   viewMode: 'transparent' as ViewMode,
   cameraPreset: 'perspective' as CameraPreset,
   labelMode: 'key' as LabelMode,
+  quality: 'auto' as QualityLevel,
   playing: true,
   speed: 1 as const,
   step: 0,
@@ -73,6 +77,7 @@ export const useTeachingStore = create<TeachingState>()(
       setViewMode: (viewMode) => set({ viewMode }),
       setCameraPreset: (cameraPreset) => set({ cameraPreset }),
       setLabelMode: (labelMode) => set({ labelMode }),
+      setQuality: (quality) => set({ quality }),
       togglePlaying: () => set((state) => ({ playing: !state.playing })),
       setSpeed: (speed) => set({ speed }),
       setStep: (step) => set({ step, teachingProgress: step / 7 }),
@@ -97,6 +102,7 @@ export const useTeachingStore = create<TeachingState>()(
         viewMode: state.viewMode,
         cameraPreset: state.cameraPreset,
         labelMode: state.labelMode,
+        quality: state.quality,
         speed: state.speed,
         step: state.step,
       }),

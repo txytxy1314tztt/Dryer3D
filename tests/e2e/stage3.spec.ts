@@ -31,6 +31,6 @@ test('stage 3 CoolProp charts, timeline, energy flow and 3D share one selection 
   await page.locator('label', { hasText: '循环' }).locator('select').selectOption('both')
   await expect(page.locator('label', { hasText: '循环' }).locator('select')).toHaveValue('both')
 
-  await page.screenshot({ path: 'docs/screenshots/stage3-thermo-workbench.png', fullPage: true })
+  await page.screenshot({ path: `test-results/stage3-thermo-workbench-${test.info().project.name}.png`, fullPage: true })
   expect(runtimeErrors).toEqual([])
 })

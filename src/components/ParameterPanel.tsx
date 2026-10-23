@@ -3,6 +3,7 @@ import { componentDefinitions, componentLabel } from '../models/engineering'
 import { useTeachingStore } from '../state/teachingStore'
 import { useThermoData } from '../thermo/useThermoData'
 import { EnergyFlow } from './EnergyFlow'
+import { processExplanations } from '../content/explanations'
 
 const processLabels: Record<string, string> = {
   '1-2': '压缩 Compression',
@@ -21,6 +22,7 @@ export function ParameterPanel() {
   const selected = state.selectedComponent && state.selectedComponent in componentDefinitions
     ? componentDefinitions[state.selectedComponent as keyof typeof componentDefinitions]
     : null
+  const explanation = state.selectedProcess ? processExplanations[state.selectedProcess] : null
   return (
     <aside className="parameter-panel">
       <div className="panel-heading"><span className="eyebrow">ENGINEERING CONTEXT</span><h3>参数与边界</h3></div>
@@ -56,7 +58,7 @@ export function ParameterPanel() {
       </>}
       <section className="depth-copy">
         <h4>{state.depth === 'basic' ? '基础讲解' : '工程深入'}</h4>
-        <p>{state.depth === 'basic' ? '先识别部件、流向和换热方向。' : '查看状态点、相区、露点、单位质量能量平衡与计算边界。'}</p>
+        <p data-testid="depth-explanation">{explanation ? explanation[state.depth] : state.depth === 'basic' ? '先识别部件、流向和换热方向。' : '查看状态点、相区、露点、单位质量能量平衡与计算边界。'}</p>
       </section>
     </aside>
   )

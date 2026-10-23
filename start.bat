@@ -7,10 +7,20 @@ if errorlevel 1 (
   echo Install pnpm or run: npm install -g pnpm
   exit /b 1
 )
+where node >nul 2>nul
+if errorlevel 1 (
+  echo [ERROR] Node.js was not found in PATH.
+  echo Install the current Node.js LTS from https://nodejs.org/
+  exit /b 1
+)
+echo [INFO] Node:
+node --version
+echo [INFO] pnpm:
+pnpm --version
 if not exist node_modules (
   echo [INFO] Installing locked dependencies...
   call pnpm install --frozen-lockfile
   if errorlevel 1 exit /b 1
 )
-echo [INFO] Opening development server at http://127.0.0.1:5173
-call pnpm dev
+echo [INFO] Starting development server. Open the Local URL printed by Vite.
+call pnpm dev -- --port 5173
