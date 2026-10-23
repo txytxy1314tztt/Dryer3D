@@ -1,0 +1,9 @@
+{
+  "observedAt": "2026-10-23T13:39:37.523Z",
+  "scope": "local Chrome run; indicative only, not a hardware-independent FPS guarantee",
+  "observedRafCallbackHz": 240.57738574874023,
+  "loadEventMs": 67,
+  "canvasCount": 1,
+  "dpr": 1,
+  "domNodes": 236
+}

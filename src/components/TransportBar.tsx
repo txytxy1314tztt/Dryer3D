@@ -23,7 +23,7 @@ export function TransportBar() {
       </label>
       <label>视角
         <select value={state.viewMode} onChange={(event) => state.setViewMode(event.target.value as ViewMode)}>
-          <option value="exterior">外观</option><option value="transparent">透明</option><option value="section">剖切示意</option><option value="exploded">爆炸示意</option>
+          <option value="exterior">工程整机</option><option value="transparent">透明</option><option value="section">剖切示意</option><option value="internal">内部工作</option><option value="exploded">爆炸教学</option>
         </select>
       </label>
       <button className="text-button" onClick={state.reset}>重置</button>

@@ -20,17 +20,13 @@ try {
         -PassThru
 
     $ready = $false
-    for ($attempt = 0; $attempt -lt 40; $attempt++) {
-        try {
-            $response = Invoke-WebRequest -UseBasicParsing 'http://127.0.0.1:4173' -TimeoutSec 1
-            if ($response.StatusCode -eq 200) {
-                $ready = $true
-                break
-            }
+    for ($attempt = 0; $attempt -lt 60; $attempt++) {
+        if ($serverProcess.HasExited) { break }
+        if ((Test-Path $stdoutPath) -and ((Get-Content $stdoutPath -Raw) -match '4173')) {
+            $ready = $true
+            break
         }
-        catch {
-            Start-Sleep -Milliseconds 250
-        }
+        Start-Sleep -Milliseconds 250
     }
     if (-not $ready) {
         $serverError = if (Test-Path $stderrPath) { Get-Content $stderrPath -Raw } else { '' }

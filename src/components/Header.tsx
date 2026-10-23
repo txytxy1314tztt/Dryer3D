@@ -26,7 +26,7 @@ export function Header() {
           </button>
         ))}
       </nav>
-      <div className="stage-tag"><span>STAGE 01</span>可运行骨架</div>
+      <div className="stage-tag"><span>STAGE 02</span>三机型结构模型</div>
     </header>
   )
 }

@@ -31,7 +31,7 @@ export function App() {
         <ParameterPanel />
       </main>
       <footer>
-        <span>阶段 1 骨架 · 2026-10-22</span>
+        <span>阶段 2 模型候选 · 2026-10-23</span>
         <span>SI units · 中文 UI / English terminology</span>
         <span className="footer-warning">非实机标定性能仿真</span>
       </footer>

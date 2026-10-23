@@ -5,7 +5,9 @@ import type { DryerType } from '../models/catalog'
 export type LearningMode = 'guided' | 'explore'
 export type KnowledgeDepth = 'basic' | 'engineering'
 export type CircuitVisibility = 'air' | 'refrigerant' | 'both'
-export type ViewMode = 'exterior' | 'transparent' | 'section' | 'exploded'
+export type ViewMode = 'exterior' | 'transparent' | 'section' | 'internal' | 'exploded'
+export type CameraPreset = 'perspective' | 'front' | 'side' | 'top' | 'internal'
+export type LabelMode = 'key' | 'hover' | 'selected' | 'off'
 
 export type TeachingState = {
   machine: DryerType
@@ -13,6 +15,8 @@ export type TeachingState = {
   depth: KnowledgeDepth
   circuit: CircuitVisibility
   viewMode: ViewMode
+  cameraPreset: CameraPreset
+  labelMode: LabelMode
   playing: boolean
   speed: 0.5 | 1 | 2
   step: number
@@ -24,6 +28,8 @@ export type TeachingState = {
   setDepth: (depth: KnowledgeDepth) => void
   setCircuit: (circuit: CircuitVisibility) => void
   setViewMode: (viewMode: ViewMode) => void
+  setCameraPreset: (cameraPreset: CameraPreset) => void
+  setLabelMode: (labelMode: LabelMode) => void
   togglePlaying: () => void
   setSpeed: (speed: 0.5 | 1 | 2) => void
   setStep: (step: number) => void
@@ -39,6 +45,8 @@ export const defaultTeachingState = {
   depth: 'basic' as KnowledgeDepth,
   circuit: 'both' as CircuitVisibility,
   viewMode: 'transparent' as ViewMode,
+  cameraPreset: 'perspective' as CameraPreset,
+  labelMode: 'key' as LabelMode,
   playing: true,
   speed: 1 as const,
   step: 0,
@@ -63,6 +71,8 @@ export const useTeachingStore = create<TeachingState>()(
       setDepth: (depth) => set({ depth }),
       setCircuit: (circuit) => set({ circuit }),
       setViewMode: (viewMode) => set({ viewMode }),
+      setCameraPreset: (cameraPreset) => set({ cameraPreset }),
+      setLabelMode: (labelMode) => set({ labelMode }),
       togglePlaying: () => set((state) => ({ playing: !state.playing })),
       setSpeed: (speed) => set({ speed }),
       setStep: (step) => set({ step, teachingProgress: step / 3 }),
@@ -85,6 +95,8 @@ export const useTeachingStore = create<TeachingState>()(
         depth: state.depth,
         circuit: state.circuit,
         viewMode: state.viewMode,
+        cameraPreset: state.cameraPreset,
+        labelMode: state.labelMode,
         speed: state.speed,
         step: state.step,
       }),

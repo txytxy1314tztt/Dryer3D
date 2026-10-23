@@ -15,7 +15,7 @@ test('stage 1 workbench loads and links chart selection to engineering context',
   await page.getByTestId('machine-heat-pump').click()
 
   await page.getByTestId('ph-1-2').click()
-  await expect(page.getByTestId('selected-component')).toHaveText('compressor')
+  await expect(page.getByTestId('selected-component')).toContainText('压缩机')
   await expect(page.getByTestId('selected-process')).toContainText('压缩')
 
   await page.screenshot({ path: 'test-results/stage1-workbench.png', fullPage: true })

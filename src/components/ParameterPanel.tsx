@@ -1,4 +1,5 @@
 import { getMachine } from '../models/catalog'
+import { componentDefinitions, componentLabel } from '../models/engineering'
 import { useTeachingStore } from '../state/teachingStore'
 
 const processLabels: Record<string, string> = {
@@ -14,6 +15,9 @@ const processLabels: Record<string, string> = {
 export function ParameterPanel() {
   const state = useTeachingStore()
   const machine = getMachine(state.machine)
+  const selected = state.selectedComponent && state.selectedComponent in componentDefinitions
+    ? componentDefinitions[state.selectedComponent as keyof typeof componentDefinitions]
+    : null
   return (
     <aside className="parameter-panel">
       <div className="panel-heading"><span className="eyebrow">ENGINEERING CONTEXT</span><h3>参数与边界</h3></div>
@@ -25,9 +29,10 @@ export function ParameterPanel() {
       <dl className="spec-list">
         <div><dt>空气路径</dt><dd>{machine.airPath}</dd></div>
         <div><dt>水分去向</dt><dd>{machine.moistureDestination}</dd></div>
-        <div><dt>当前部件</dt><dd data-testid="selected-component">{state.selectedComponent ?? '未选择'}</dd></div>
+        <div><dt>当前部件</dt><dd data-testid="selected-component">{componentLabel(state.selectedComponent)}</dd></div>
         <div><dt>当前过程</dt><dd data-testid="selected-process">{state.selectedProcess ? processLabels[state.selectedProcess] : '未选择'}</dd></div>
       </dl>
+      {selected && <section className="component-note"><strong>{selected.label}</strong><p>{selected.note}</p></section>}
       <div className="placeholder-data">
         <div><span>压力 Pressure</span><strong>— <small>MPa</small></strong></div>
         <div><span>温度 Temperature</span><strong>— <small>°C</small></strong></div>

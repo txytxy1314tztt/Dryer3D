@@ -7,14 +7,15 @@ type FlowParticlesProps = {
   points: [number, number, number][]
   color: string
   count?: number
+  closed?: boolean
 }
 
-export function FlowParticles({ kind, points, color, count = 8 }: FlowParticlesProps) {
+export function FlowParticles({ kind, points, color, count = 8, closed = true }: FlowParticlesProps) {
   const progress = useTeachingStore((state) => state.teachingProgress)
   const circuit = useTeachingStore((state) => state.circuit)
   const curve = useMemo(
-    () => new CatmullRomCurve3(points.map((point) => new Vector3(...point)), true),
-    [points],
+    () => new CatmullRomCurve3(points.map((point) => new Vector3(...point)), closed),
+    [points, closed],
   )
   const visible = circuit === 'both' || circuit === kind
 
